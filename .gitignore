@@ -1,0 +1,37 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# BYOD data: never commit raw exports (README.md with provenance IS committed)
+data/raw/*
+!data/raw/README.md
+
+# Medallion (Delta tables)
+data/medallion/
+
+# Spark local artifacts
+spark-warehouse/
+target/
+derby.log
+
+# Tools: winutils binary is downloaded by a script, not committed
+tools/winutils/
+tools/jars/
+
+# E2E artifacts
+artifacts/e2e/*
+!artifacts/e2e/.gitkeep
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

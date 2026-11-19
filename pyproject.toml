@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "presupuestoabierto"
+version = "0.1.0"
+description = "PresupuestoAbiertoPE - municipal budget execution medallion pipeline"
+requires-python = ">=3.13"
+dependencies = [
+  "pyspark>=4.2,<5.0",
+  "delta-spark>=4.4,<5.0",
+  "pydantic-settings>=2.6,<3.0",
+  "beautifulsoup4>=4.12,<5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9.0",
+  "ruff>=0.8,<1.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["presupuesto"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["B008"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/e2e"]
+pythonpath = ["."]
+addopts = "-q"
