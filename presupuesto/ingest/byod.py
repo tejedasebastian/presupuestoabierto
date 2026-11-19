@@ -52,6 +52,8 @@ class ExportContext:
     entity_code: str | None = None
     entity_ubigee: str | None = None
     entity_name: str | None = None
+    department: str | None = None
+    department_code: str | None = None
 
 
 def _read_html(path: Path) -> str:
@@ -213,6 +215,16 @@ def parse_export(
                 # Unrecognized concept: keep the row for the quality layer
                 # to judge; never silently drop data.
                 row["entity_name"] = concept
+
+        # Department-level municipal exports do not repeat the department in
+        # every row; the manifest supplies it as context. Do not overwrite a
+        # department the export itself declares (e.g. the national department
+        # aggregate).
+        if entity_context:
+            if entity_context.get("department") and not row["department"]:
+                row["department"] = entity_context["department"]
+            if entity_context.get("department_code") and not row["department_code"]:
+                row["department_code"] = entity_context["department_code"]
 
         if len(cells) >= 9:
             row["pia"] = _parse_amount(cells[1])

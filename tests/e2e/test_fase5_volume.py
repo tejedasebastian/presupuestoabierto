@@ -94,5 +94,11 @@ def test_byod_manifest_declares_provenance() -> None:
     manifest = json.loads((REPO_ROOT / "data" / "raw" / "byod_manifest.json").read_text("utf-8"))
     grains = {entry["grain"] for entry in manifest["files"]}
     assert grains == {"department", "entity_annual", "entity_monthly", "category_national"}
+    annual = [entry for entry in manifest["files"] if entry["grain"] == "entity_annual"]
+    assert len(annual) == 25
+    assert {entry["context"]["department_code"] for entry in annual} == {
+        f"{code:02d}" for code in range(1, 26)
+    }
+    assert all(entry["context"]["department"] for entry in annual)
     monthly = [entry for entry in manifest["files"] if entry["grain"] == "entity_monthly"]
     assert monthly and monthly[0]["context"]["entity_code"] == "301271"

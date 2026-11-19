@@ -87,7 +87,10 @@ def test_findings_and_exports_written(spark_session) -> None:
     assert by_entity_csv.exists()
     lines = by_entity_csv.read_text(encoding="utf-8").strip().splitlines()
     assert len(lines) == 51  # header + 50 entities
-    assert lines[0] == "entity_code,entity_name,pim_total,accrued_total,execution_pct,rank"
+    assert lines[0] == (
+        "entity_code,entity_name,department,department_code,"
+        "pim_total,accrued_total,execution_pct,rank"
+    )
 
     summary_csv = ARTIFACTS / "gold_summary.csv"
     assert summary_csv.exists()

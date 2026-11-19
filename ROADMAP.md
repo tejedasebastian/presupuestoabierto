@@ -291,6 +291,38 @@ chore: release v0.1.0
 
 ---
 
+## Fase 7 — v1.0.0 nacional 2025
+
+- [x] Descargar las 25 exportaciones BYOD departamentales (más agregados nacionales y serie mensual) y registrar el manifiesto de 28 archivos.
+- [x] Ajustar el parser y el manifiesto: contexto `department`/`department_code` y `min_rows` solo para el grano mensual.
+- [x] Añadir `department` a gold, CSV y modelo TMDL; `Municipalidad` única para homónimos.
+- [x] Dashboard nacional: bottom-10 nacional, 6 genéricas, bottom-7 de 25 departamentos, ranking de 1,892 con filtro por departamento + búsqueda.
+- [x] Capturas nacionales en `docs/screenshots/`.
+- [ ] PBIX nacional en Git (guardado manual desde Power BI Desktop).
+- [x] Diccionario de datos y diagrama de arquitectura.
+- [ ] Test con una persona externa (kit en `docs/user-test-v1.0.0.md`; pendiente de ejecutar).
+- [ ] Tag y release `v1.0.0`.
+
+**Evidencia del checkpoint:**
+
+- 28 archivos, **1,939 filas**, **1,892 municipalidades**, **25 departamentos**, 0 filas en cuarentena.
+- **12/12 validaciones**; gate abierto; gold con 1,892 entidades y 12 filas mensuales.
+- Ejecución promedio **79.5%**; **196 alertas <60%**; peor **Eleazar Guzmán Barrón (Áncash) 13.2%**; brecha planillas-inversión **21.2 pp**.
+- Run nacional **129.4 s** (bronze 34.7 s, silver 30.3 s, calidad 20.9 s, gold 25.6 s).
+- PBIR `validate` → **0 errores, 0 warnings**; modelo TMDL 4 tablas / 11 medidas; Desktop refrescado con 1,892 filas.
+- Capturas en `docs/screenshots/panorama.png` y `ranking.png`.
+- Manifiesto con SHA-256 de los 28 archivos fuente y checksums de los 6 payloads.
+
+**Criterio de aceptación:**
+
+- [x] Cobertura nacional y 12/12 con datos reales.
+- [x] Dashboard nacional validado y capturado.
+- [x] Documentación de datos, arquitectura y hallazgos.
+- [ ] PBIX nacional en Git y release `v1.0.0` con artefactos.
+- [ ] Feedback de una persona externa.
+
+---
+
 ## Definición de terminado
 
 Un checkpoint está terminado cuando:

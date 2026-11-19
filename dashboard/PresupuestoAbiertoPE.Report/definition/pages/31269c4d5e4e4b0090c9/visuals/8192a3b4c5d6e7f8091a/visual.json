@@ -491,7 +491,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Barras horizontales de las 10 municipalidades con menor ejecución; Colonia 21.8%, Cacra 34.7%, Putinza 45.5%, con línea de umbral en 60%.'"
+                  "Value": "'Barras horizontales de las 10 municipalidades con menor ejecución a nivel nacional; Eleazar Guzmán Barrón 13.2%, Tapacocha 16.4%, Coris 20.2%, con umbral de alerta de 60%.'"
                 }
               }
             }

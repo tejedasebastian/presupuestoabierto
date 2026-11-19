@@ -10,6 +10,8 @@ from pyspark.sql import DataFrame
 EXEC_BY_ENTITY_HEADER = [
     "entity_code",
     "entity_name",
+    "department",
+    "department_code",
     "pim_total",
     "accrued_total",
     "execution_pct",
@@ -53,6 +55,8 @@ def write_exec_by_entity_csv(df: DataFrame, artifacts_dir: Path) -> Path:
                 [
                     row["entity_code"],
                     row["entity_name"],
+                    row["department"],
+                    row["department_code"],
                     row["pim_total"],
                     row["accrued_total"],
                     row["execution_pct"],

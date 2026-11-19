@@ -45,6 +45,20 @@
             },
             {
               "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ExecutionByEntity"
+                    }
+                  },
+                  "Property": "Departamento"
+                }
+              },
+              "queryRef": "ExecutionByEntity.Departamento",
+              "nativeQueryRef": "Departamento"
+            },
+            {
+              "field": {
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
@@ -320,7 +334,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "856D"
+                  "Value": "760D"
                 }
               }
             }
@@ -334,7 +348,21 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "300D"
+                  "Value": "200D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "ExecutionByEntity.Departamento"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "260D"
                 }
               }
             }
@@ -348,7 +376,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "300D"
+                  "Value": "260D"
                 }
               }
             }
@@ -362,7 +390,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "280D"
+                  "Value": "240D"
                 }
               }
             }
@@ -688,7 +716,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Tabla del ranking completo de 171 municipalidades con puesto, PIM, devengado y porcentaje de ejecución.'"
+                  "Value": "'Tabla del ranking completo de 1,892 municipalidades del Perú con puesto, departamento, PIM, devengado y porcentaje de ejecución.'"
                 }
               }
             }

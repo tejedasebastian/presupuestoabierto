@@ -212,7 +212,16 @@ function navButton({
   };
 }
 
-function cardVisual({ name, x, y, width, height, entity, measureName, label, valueHex, accentHex, alt }) {
+function cardVisual({ name, x, y, width, height, entity, measureName, label, valueHex, accentHex, alt, displayUnits = null }) {
+  const valueProperties = {
+    fontSize: num(28),
+    fontColor: solid(valueHex),
+    bold: bool(true),
+  };
+  if (displayUnits) {
+    valueProperties.labelDisplayUnits = str(displayUnits);
+    valueProperties.labelPrecision = int(0);
+  }
   return {
     $schema: SCHEMA_VISUAL,
     name,
@@ -231,11 +240,7 @@ function cardVisual({ name, x, y, width, height, entity, measureName, label, val
       objects: {
         value: [
           {
-            properties: {
-              fontSize: num(28),
-              fontColor: solid(valueHex),
-              bold: bool(true),
-            },
+            properties: valueProperties,
             selector: { id: "default" },
           },
         ],
@@ -844,7 +849,7 @@ writeVisual(
       paragraph("Fuente: MEF · Consulta Amigable 2025", 11, C.inkSecondary, {
         align: "right",
       }),
-      paragraph("171 municipalidades (depto. Lima) · 12/12 validaciones", 11, C.inkSecondary, {
+      paragraph("1,892 municipalidades (25 departamentos) · 12/12 validaciones", 11, C.inkSecondary, {
         align: "right",
       }),
       paragraph("Barras en ámbar: ejecución menor al umbral de 60%", 11, C.inkSecondary, {
@@ -867,7 +872,7 @@ writeVisual(
     tooltip: "Ir al ranking completo de municipalidades",
     icon: "rightArrow",
     iconPlacement: "right",
-    alt: "Botón para abrir el ranking completo de las 171 municipalidades",
+    alt: "Botón para abrir el ranking completo de las 1,892 municipalidades",
   }),
 );
 
@@ -884,7 +889,8 @@ writeVisual(
     label: "Municipalidades analizadas",
     valueHex: C.navy,
     accentHex: C.teal,
-    alt: "Tarjeta con 171 municipalidades analizadas",
+    alt: "Tarjeta con 1,892 municipalidades analizadas",
+    displayUnits: "0",
   }),
 );
 
@@ -901,7 +907,7 @@ writeVisual(
     label: "Ejecución promedio",
     valueHex: C.teal,
     accentHex: C.teal,
-    alt: "Tarjeta con la ejecución promedio de 84.7 por ciento",
+    alt: "Tarjeta con la ejecución promedio nacional de 79.5 por ciento",
   }),
 );
 
@@ -918,7 +924,7 @@ writeVisual(
     label: "Alertas (< 60%)",
     valueHex: C.amber,
     accentHex: C.amber,
-    alt: "Tarjeta con 9 municipalidades por debajo del umbral de alerta de 60 por ciento",
+    alt: "Tarjeta con 196 municipalidades por debajo del umbral de alerta de 60 por ciento",
   }),
 );
 
@@ -953,7 +959,7 @@ writeVisual(
     yEntity: "ExecutionByEntity",
     yMeasure: "Ejecución % entidad",
     yNative: "Ejecución % entidad",
-    alt: "Barras horizontales de las 10 municipalidades con menor ejecución; Colonia 21.8%, Cacra 34.7%, Putinza 45.5%, con línea de umbral en 60%.",
+    alt: "Barras horizontales de las 10 municipalidades con menor ejecución a nivel nacional; Eleazar Guzmán Barrón 13.2%, Tapacocha 16.4%, Coris 20.2%, con umbral de alerta de 60%.",
     topN: {
       entity: "ExecutionByEntity",
       fieldProperty: "Municipalidad",
@@ -1056,7 +1062,7 @@ writeVisual(
         native: "Valor",
       },
     ],
-    alt: "Tabla de evidencia de calidad con 171 municipalidades, ejecución promedio 84.7%, mejor 100%, peor 21.8% y 9 alertas.",
+    alt: "Tabla de evidencia de calidad del run nacional: 1,892 municipalidades, 12/12 validaciones, 196 alertas.",
     fontSize: 9,
     titleSize: 12,
     outerPadding: 12,
@@ -1080,7 +1086,7 @@ writeVisual(
     width: 1080,
     height: 64,
     paragraphs: [
-      paragraph("Ranking completo: las 171 municipalidades de Lima", 32, C.navy, {
+      paragraph("Ranking completo: las 1,892 municipalidades del Perú", 32, C.navy, {
         family: "Segoe UI Semibold",
         bold: true,
       }),
@@ -1127,15 +1133,30 @@ writeVisual(
 writeVisual(
   P2,
   slicerVisual({
-    name: "091a2b3c4d5e6f708192",
+    name: "3a4b5c6d7e8f90123456",
     x: 32,
     y: 120,
-    width: 640,
+    width: 360,
+    height: 80,
+    entity: "ExecutionByEntity",
+    property: "Departamento",
+    header: "Departamento",
+    alt: "Selector desplegable para filtrar el ranking por departamento",
+  }),
+);
+
+writeVisual(
+  P2,
+  slicerVisual({
+    name: "091a2b3c4d5e6f708192",
+    x: 416,
+    y: 120,
+    width: 480,
     height: 80,
     entity: "ExecutionByEntity",
     property: "Municipalidad",
     header: "Buscar municipalidad",
-    alt: "Selector desplegable para buscar una municipalidad entre las 171 del ranking",
+    alt: "Selector desplegable para buscar una municipalidad entre las 1,892 del ranking",
   }),
 );
 
@@ -1143,12 +1164,12 @@ writeVisual(
   P2,
   textbox({
     name: "1a2b3c4d5e6f708192a4",
-    x: 696,
+    x: 920,
     y: 136,
-    width: 600,
+    width: 800,
     height: 48,
     paragraphs: [
-      paragraph("Escribe o selecciona una municipalidad para filtrar la tabla.", 11, C.inkSecondary),
+      paragraph("Selecciona un departamento o busca una municipalidad.", 11, C.inkSecondary),
       paragraph("El ranking está ordenado por puesto: 1 = mayor ejecución.", 11, C.inkSecondary),
     ],
   }),
@@ -1175,6 +1196,11 @@ writeVisual(
         native: "Municipalidad",
       },
       {
+        field: column("ExecutionByEntity", "Departamento"),
+        queryRef: "ExecutionByEntity.Departamento",
+        native: "Departamento",
+      },
+      {
         field: measure("ExecutionByEntity", "PIM total"),
         queryRef: "ExecutionByEntity.PIM total",
         native: "PIM total",
@@ -1192,13 +1218,14 @@ writeVisual(
     ],
     widths: [
       { queryRef: "ExecutionByEntity.Puesto", width: 72 },
-      { queryRef: "ExecutionByEntity.Municipalidad", width: 856 },
-      { queryRef: "ExecutionByEntity.PIM total", width: 300 },
-      { queryRef: "ExecutionByEntity.Devengado total", width: 300 },
-      { queryRef: "ExecutionByEntity.Ejecución % entidad", width: 280 },
+      { queryRef: "ExecutionByEntity.Municipalidad", width: 760 },
+      { queryRef: "ExecutionByEntity.Departamento", width: 200 },
+      { queryRef: "ExecutionByEntity.PIM total", width: 260 },
+      { queryRef: "ExecutionByEntity.Devengado total", width: 260 },
+      { queryRef: "ExecutionByEntity.Ejecución % entidad", width: 240 },
     ],
     sortBy: measure("ExecutionByEntity", "Puesto"),
-    alt: "Tabla del ranking completo de 171 municipalidades con puesto, PIM, devengado y porcentaje de ejecución.",
+    alt: "Tabla del ranking completo de 1,892 municipalidades del Perú con puesto, departamento, PIM, devengado y porcentaje de ejecución.",
     fontSize: 10,
     titleSize: 13,
     outerPadding: 16,

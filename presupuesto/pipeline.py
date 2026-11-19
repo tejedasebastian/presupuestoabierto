@@ -55,12 +55,9 @@ def _ingest_specs(settings: Settings, specs) -> tuple[list[dict], list[dict]]:
     for spec in specs:
         try:
             file_rows = parse_export(spec.path, grain=spec.grain, entity_context=spec.context)
-            if (
-                spec.grain in {"entity_annual", "entity_monthly"}
-                and len(file_rows) < settings.min_rows
-            ):
+            if spec.grain == "entity_monthly" and len(file_rows) < settings.min_rows:
                 raise ValidationError(
-                    "Export is below the minimum row count for its grain.",
+                    "Monthly export is below the minimum row count.",
                     {
                         "file": spec.path.name,
                         "grain": spec.grain,

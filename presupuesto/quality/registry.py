@@ -98,7 +98,10 @@ def check_raw_row_count(files_attempted: int, file_failures: list[dict]) -> Chec
         rows_checked=files_attempted,
         rows_failed=len(failed),
         duration_ms=round((time.perf_counter() - started) * 1000, 2),
-        sql="entity_annual / entity_monthly exports must carry >= settings.min_rows rows",
+        sql=(
+            "entity_monthly exports must carry >= settings.min_rows rows; "
+            "entity_annual exports may be small"
+        ),
         failed_sample=failed,
     )
 

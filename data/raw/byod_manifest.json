@@ -1,7 +1,7 @@
 {
-  "label": "byod-2025",
+  "label": "byod-2025-national",
   "year": 2025,
-  "query_date": "18-noviembre-2026",
+  "query_date": "19-noviembre-2026",
   "source": "Consulta Amigable del MEF (SIAF), apps5.mineco.gob.pe",
   "files": [
     {
@@ -9,8 +9,204 @@
       "grain": "department"
     },
     {
+      "path": "consulta_amigable_amazonas_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Amazonas",
+        "department_code": "01"
+      }
+    },
+    {
+      "path": "consulta_amigable_ancash_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Áncash",
+        "department_code": "02"
+      }
+    },
+    {
+      "path": "consulta_amigable_apurimac_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Apurímac",
+        "department_code": "03"
+      }
+    },
+    {
+      "path": "consulta_amigable_arequipa_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Arequipa",
+        "department_code": "04"
+      }
+    },
+    {
+      "path": "consulta_amigable_ayacucho_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Ayacucho",
+        "department_code": "05"
+      }
+    },
+    {
+      "path": "consulta_amigable_cajamarca_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Cajamarca",
+        "department_code": "06"
+      }
+    },
+    {
+      "path": "consulta_amigable_callao_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Callao",
+        "department_code": "07"
+      }
+    },
+    {
+      "path": "consulta_amigable_cusco_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Cusco",
+        "department_code": "08"
+      }
+    },
+    {
+      "path": "consulta_amigable_huancavelica_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Huancavelica",
+        "department_code": "09"
+      }
+    },
+    {
+      "path": "consulta_amigable_huanuco_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Huánuco",
+        "department_code": "10"
+      }
+    },
+    {
+      "path": "consulta_amigable_ica_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Ica",
+        "department_code": "11"
+      }
+    },
+    {
+      "path": "consulta_amigable_junin_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Junín",
+        "department_code": "12"
+      }
+    },
+    {
+      "path": "consulta_amigable_la_libertad_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "La Libertad",
+        "department_code": "13"
+      }
+    },
+    {
+      "path": "consulta_amigable_lambayeque_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Lambayeque",
+        "department_code": "14"
+      }
+    },
+    {
       "path": "consulta_amigable_lima_municipalidades_2025.xls",
-      "grain": "entity_annual"
+      "grain": "entity_annual",
+      "context": {
+        "department": "Lima",
+        "department_code": "15"
+      }
+    },
+    {
+      "path": "consulta_amigable_loreto_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Loreto",
+        "department_code": "16"
+      }
+    },
+    {
+      "path": "consulta_amigable_madre_de_dios_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Madre de Dios",
+        "department_code": "17"
+      }
+    },
+    {
+      "path": "consulta_amigable_moquegua_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Moquegua",
+        "department_code": "18"
+      }
+    },
+    {
+      "path": "consulta_amigable_pasco_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Pasco",
+        "department_code": "19"
+      }
+    },
+    {
+      "path": "consulta_amigable_piura_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Piura",
+        "department_code": "20"
+      }
+    },
+    {
+      "path": "consulta_amigable_puno_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Puno",
+        "department_code": "21"
+      }
+    },
+    {
+      "path": "consulta_amigable_san_martin_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "San Martín",
+        "department_code": "22"
+      }
+    },
+    {
+      "path": "consulta_amigable_tacna_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Tacna",
+        "department_code": "23"
+      }
+    },
+    {
+      "path": "consulta_amigable_tumbes_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Tumbes",
+        "department_code": "24"
+      }
+    },
+    {
+      "path": "consulta_amigable_ucayali_municipalidades_2025.xls",
+      "grain": "entity_annual",
+      "context": {
+        "department": "Ucayali",
+        "department_code": "25"
+      }
     },
     {
       "path": "consulta_amigable_miraflores_mes_2025.xls",
@@ -18,7 +214,9 @@
       "context": {
         "entity_code": "301271",
         "entity_ubigee": "150122",
-        "entity_name": "MUNICIPALIDAD DISTRITAL DE MIRAFLORES"
+        "entity_name": "MUNICIPALIDAD DISTRITAL DE MIRAFLORES",
+        "department": "Lima",
+        "department_code": "15"
       }
     },
     {

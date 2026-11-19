@@ -4,7 +4,7 @@
 
 PresupuestoAbiertoPE convierte la ejecución presupuestal de las municipalidades (exportaciones oficiales del MEF) en un medallion **bronze → silver → gold** con **12 validaciones de calidad**, y responde una pregunta simple: ¿qué municipalidades ejecutan menos, en qué categorías y en qué meses?
 
-> **Estado:** v0.1.0 — pipeline medallion, 12 validaciones, dashboard PBIP y evidencia BYOD 2025.
+> **Estado:** v1.0.0 — cobertura nacional 2025 (1,892 municipalidades), 12 validaciones y dashboard PBIP.
 >
 > **English:** [README.en.md](README.en.md)
 
@@ -174,35 +174,36 @@ artifacts/e2e/
 
 ## Métricas
 
-> Cifras medidas por el pipeline sobre el BYOD real (18/11/2026). No se editaron a mano.
+> Cifras medidas por el pipeline sobre el BYOD nacional real (19/11/2026). No se editaron a mano.
 
 | Métrica | Valor |
 |---|---|
-| Registros procesados (BYOD real) | 218 |
-| Municipalidades cubiertas (depto. Lima) | 171 |
-| Score de calidad (BYOD real) | **12/12 pass** |
-| Duración del pipeline (BYOD real, local) | 112.9 s |
-| Ejecución promedio | 84.7% |
-| Hallazgos con datos reales | 9 alertas < 60%; peor: Colonia 21.8% |
+| Registros procesados (BYOD nacional) | 1,939 |
+| Municipalidades cubiertas (25 departamentos) | 1,892 |
+| Score de calidad (BYOD nacional) | **12/12 pass** |
+| Duración del pipeline (BYOD nacional, local) | 129.4 s |
+| Ejecución promedio | 79.5% |
+| Hallazgos con datos reales | 196 alertas < 60%; peor: Eleazar Guzmán Barrón (Áncash) 13.2% |
 | Volume (CI) | 12,800 entidades ≈ 934k filas |
 
 ---
 
 ## Limitaciones
 
-- v0.1 procesa un solo año y solo gastos.
+- v1.0 procesa un solo año (2025) y solo gastos.
+- Cobertura nacional: 1,892 municipalidades de 25 departamentos (el universo municipal es ~1,900).
 - No scrapea el MEF: los datos llegan BYOD desde tu navegador.
 - El formato del CSV de la Consulta Amigable puede variar; el adaptador falla explícito si faltan columnas.
 - Los hallazgos describen ejecución, no explican causas.
-- El `.pbix` final se arma en Power BI Desktop (manual).
-- El dashboard no se publica en Power BI Service en v0.1.
+- El `.pbix` final se guarda en Power BI Desktop; el PBIP es la fuente reproducible.
+- El dashboard no se publica en Power BI Service en v1.0.
 
 ---
 
 ## Roadmap
 
-- v0.1: ingesta BYOD, medallion, 12 validaciones, gold, hallazgos, dashboard evidence, release.
-- v0.2: MinIO, Prefect, multi-año, ingresos, comparación con SEACE, publicación del dashboard.
+- v1.0: cobertura nacional 2025, BYOD departamental, gold con departamento, dashboard nacional y release.
+- v1.1: MinIO, Prefect, multi-año, ingresos, comparación con SEACE y publicación del dashboard.
 
 Ver [ROADMAP.md](ROADMAP.md).
 

@@ -4,7 +4,7 @@
 
 PresupuestoAbiertoPE turns municipal budget execution (official exports from Peru's Ministry of Economy) into a **bronze → silver → gold** medallion with **12 quality validations**, and answers a simple question: which municipalities execute the least, in which categories, and in which months?
 
-> **Status:** v0.1.0 — medallion pipeline, 12 validations, PBIP dashboard and 2025 BYOD evidence.
+> **Status:** v1.0.0 — national 2025 coverage (1,892 municipalities), 12 validations and PBIP dashboard.
 >
 > **Español:** [README.md](README.md)
 
@@ -174,35 +174,36 @@ artifacts/e2e/
 
 ## Metrics
 
-> Measured by the pipeline on the real BYOD run (2026-11-18). No hand-edited numbers.
+> Measured by the pipeline on the real national BYOD run (2026-11-19). No hand-edited numbers.
 
 | Metric | Value |
 |---|---|
-| Records processed (real BYOD) | 218 |
-| Municipalities covered (Lima dept.) | 171 |
-| Quality score (real BYOD) | **12/12 pass** |
-| Pipeline runtime (real BYOD, local) | 112.9 s |
-| Average execution | 84.7% |
-| Findings from real data | 9 alerts < 60%; worst: Colonia 21.8% |
+| Records processed (national BYOD) | 1,939 |
+| Municipalities covered (25 departments) | 1,892 |
+| Quality score (national BYOD) | **12/12 pass** |
+| Pipeline runtime (national BYOD, local) | 129.4 s |
+| Average execution | 79.5% |
+| Findings from real data | 196 alerts < 60%; worst: Eleazar Guzmán Barrón (Áncash) 13.2% |
 | Volume (CI) | 12,800 entities ≈ 934k rows |
 
 ---
 
 ## Limitations
 
-- v0.1 processes a single year and expenses only.
+- v1.0 processes a single year (2025) and expenses only.
+- National coverage: 1,892 municipalities across 25 departments (the municipal universe is ~1,900).
 - No scraping: data arrives BYOD from your browser.
 - The Ministry's export format may vary; the adapter fails explicitly when columns are missing.
 - Findings describe execution, not causes.
-- The final `.pbix` is assembled in Power BI Desktop (manual).
-- The dashboard is not published to Power BI Service in v0.1.
+- The final `.pbix` is saved in Power BI Desktop; the PBIP is the reproducible source.
+- The dashboard is not published to Power BI Service in v1.0.
 
 ---
 
 ## Roadmap
 
-- v0.1: BYOD ingestion, medallion, 12 validations, gold, findings, dashboard evidence, release.
-- v0.2: MinIO, Prefect, multi-year, revenue data, SEACE comparison, dashboard publishing.
+- v1.0: national 2025 coverage, departmental BYOD, department-aware gold, national dashboard and release.
+- v1.1: MinIO, Prefect, multi-year, revenue data, SEACE comparison and dashboard publishing.
 
 See [ROADMAP.md](ROADMAP.md).
 

@@ -24,13 +24,13 @@ def gold_dir(medallion_dir: Path) -> Path:
 
 
 def build_exec_by_entity(silver: DataFrame) -> DataFrame:
-    """Per-entity annual totals with recomputed execution pct and rank."""
+    """Per-entity annual totals with department, execution pct and national rank."""
     annual = silver.filter(F.col("grain") == "entity_annual").select(
-        "entity_code", "entity_name", "pim", "accrued"
+        "entity_code", "entity_name", "department", "department_code", "pim", "accrued"
     )
     window = Window.orderBy(F.col("execution_pct").desc(), F.col("entity_code"))
     return (
-        annual.groupBy("entity_code", "entity_name")
+        annual.groupBy("entity_code", "entity_name", "department", "department_code")
         .agg(
             F.sum("pim").alias("pim_total"),
             F.sum("accrued").alias("accrued_total"),
@@ -87,6 +87,8 @@ def build_findings(
         return {
             "entity_code": row["entity_code"],
             "entity_name": row["entity_name"],
+            "department": row["department"],
+            "department_code": row["department_code"],
             "pim_total": float(row["pim_total"] or 0),
             "accrued_total": float(row["accrued_total"] or 0),
             "execution_pct": round(row["execution_pct"], 1),
@@ -117,8 +119,12 @@ def write_gold(
 
     exec_by_entity = build_exec_by_entity(silver)
     exec_monthly = build_exec_monthly(silver)
-    exec_by_entity.write.format("delta").mode("overwrite").save(str(out / "exec_by_entity"))
-    exec_monthly.write.format("delta").mode("overwrite").save(str(out / "exec_monthly"))
+    exec_by_entity.write.format("delta").option("overwriteSchema", "true").mode("overwrite").save(
+        str(out / "exec_by_entity")
+    )
+    exec_monthly.write.format("delta").option("overwriteSchema", "true").mode("overwrite").save(
+        str(out / "exec_monthly")
+    )
 
     findings = build_findings(exec_by_entity, silver, low_threshold)
     return {

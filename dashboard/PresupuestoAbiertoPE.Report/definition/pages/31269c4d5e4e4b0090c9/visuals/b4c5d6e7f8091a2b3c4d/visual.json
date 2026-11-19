@@ -472,7 +472,7 @@
             "altText": {
               "expr": {
                 "Literal": {
-                  "Value": "'Tabla de evidencia de calidad con 171 municipalidades, ejecución promedio 84.7%, mejor 100%, peor 21.8% y 9 alertas.'"
+                  "Value": "'Tabla de evidencia de calidad del run nacional: 1,892 municipalidades, 12/12 validaciones, 196 alertas.'"
                 }
               }
             }

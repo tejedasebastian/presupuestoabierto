@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "1a2b3c4d5e6f708192a4",
   "position": {
-    "x": 696,
+    "x": 920,
     "y": 136,
     "z": 1000,
     "height": 48,
-    "width": 600,
+    "width": 800,
     "tabOrder": 1000
   },
   "visual": {
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Escribe o selecciona una municipalidad para filtrar la tabla.",
+                    "value": "Selecciona un departamento o busca una municipalidad.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "11px",

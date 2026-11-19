@@ -2,6 +2,22 @@
 
 Todas las fechas son locales (America/Lima).
 
+## [1.0.0] — 2026-11-19
+
+### Añadido
+
+- Cobertura nacional 2025: 25 departamentos, 1,892 municipalidades, 28 archivos BYOD (25 departamentales + agregados + serie mensual).
+- Contexto departamental en el parser y en el manifiesto; `min_rows` solo se exige al grano mensual, para no descartar departamentos pequeños como Callao (7 municipalidades).
+- `department` en gold y en `execution_by_entity.csv`; columna calculada `Municipalidad` única (desambigua homónimos con departamento/código).
+- Dashboard nacional de 2 páginas: bottom-10 nacional, 6 genéricas principales, bottom-7 de 25 departamentos, tabla de calidad y ranking de 1,892 municipalidades con filtro por departamento + búsqueda.
+- `docs/data-dictionary.md`, `docs/architecture.md` y kit de test con usuario externo.
+- Run nacional: 1,939 filas, 1,892 municipalidades, 12/12 validaciones, 196 alertas, promedio 79.5%, peor 13.2% (Eleazar Guzmán Barrón, Áncash), 129.4 s.
+
+### Notas
+
+- El `.pbix` nacional se guarda en Power BI Desktop a partir del PBIP; el PBIP es la fuente reproducible.
+- No se publica en Power BI Service en v1.0.
+
 ## [0.1.0] — 2026-11-18
 
 ### Añadido
