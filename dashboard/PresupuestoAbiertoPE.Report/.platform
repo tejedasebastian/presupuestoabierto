@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.1.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "PresupuestoAbiertoPE"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "01fb462e-5d41-480f-817f-32b5bc0797d6"
+  }
+}

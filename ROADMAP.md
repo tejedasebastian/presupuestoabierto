@@ -248,13 +248,22 @@ docs: add real data findings draft
 
 ## Fase 6 — Dashboard, docs y release
 
-- [ ] Dashboard autorado con la skill `powerbi-report-cli` (proyecto PBIP reproducible) y modelo con el MCP `powerbi-modeling`.
-- [ ] Capturas del tablero en Power BI Desktop (paso manual del usuario).
-- [ ] Notebook wrapper de equivalencia Databricks (≤ 20 líneas, sin lógica).
-- [ ] README con capturas y métricas reales.
-- [ ] README.en.md.
+- [x] Dashboard autorado con la skill `powerbi-report-cli` (proyecto PBIP reproducible) y modelo con el MCP `powerbi-modeling`.
+- [x] Capturas del tablero en Power BI Desktop (validadas; el guardado final del `.pbix` queda en manos del usuario).
+- [x] Notebook wrapper de equivalencia Databricks (≤ 20 líneas, sin lógica).
+- [x] README con capturas y métricas reales.
+- [x] README.en.md.
 - [ ] Tag `v0.1.0` y release con artefactos.
-- [ ] Actualizar `Portafolio_Proyectos_Peru.md`.
+- [x] Actualizar `Portafolio_Proyectos_Peru.md`.
+
+**Evidencia del checkpoint:**
+
+- PBIP `dashboard/PresupuestoAbiertoPE.pbip` con 2 páginas y 17 visuales; `validate` → **0 errores, 0 warnings**.
+- Modelo TMDL: 4 tablas, 12 medidas; refresh completo verificado con 171 municipalidades, 84.7% promedio y 9 alertas.
+- Capturas retenidas en `docs/screenshots/panorama.png` y `docs/screenshots/ranking.png` (Desktop, escala 2).
+- Notebook `notebooks/databricks_equivalence.py` (9 líneas efectivas, sin lógica de negocio).
+- README y README.en.md con demo, métricas reales y enlace a `docs/dashboard.md`.
+- `Portafolio_Proyectos_Peru.md` actualizado con estado v0.1.0, stack y métricas reales.
 
 **E2E del checkpoint:**
 

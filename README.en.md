@@ -4,7 +4,7 @@
 
 PresupuestoAbiertoPE turns municipal budget execution (official exports from Peru's Ministry of Economy) into a **bronze → silver → gold** medallion with **12 quality validations**, and answers a simple question: which municipalities execute the least, in which categories, and in which months?
 
-> **Status:** v0.1.0 in development. This README describes the finished product; screenshots and metrics will be completed as the roadmap closes.
+> **Status:** v0.1.0 — medallion pipeline, 12 validations, PBIP dashboard and 2025 BYOD evidence.
 >
 > **Español:** [README.md](README.md)
 
@@ -31,7 +31,7 @@ PresupuestoAbiertoPE answers:
 4. **Quality:** 12 validations with a gate; any `fail` blocks gold.
 5. **Gold:** execution percentage by municipality, category, and month, with rankings (window functions).
 6. **Findings:** bottom-N execution, critical categories, and alerts.
-7. **Dashboard:** CSV exports ready for Power BI with a reproducible spec.
+7. **Dashboard:** a reproducible 2-page PBIP (overview and ranking) plus checksummed CSV exports.
 
 It does not scrape the Ministry, does not invent findings, and does not accuse anyone: it describes budget execution in neutral language.
 
@@ -39,13 +39,13 @@ It does not scrape the Ministry, does not invent findings, and does not accuse a
 
 ## Demo
 
-> Screenshots pending implementation.
+### Dashboard (real BYOD, 2025)
 
-![Medallion pipeline](docs/assets/pipeline.png)
+![Dashboard overview](docs/screenshots/panorama.png)
 
-![Quality report](docs/assets/quality.png)
+![Full municipality ranking](docs/screenshots/ranking.png)
 
-![Power BI dashboard](docs/assets/dashboard.png)
+The PBIP project lives in [`dashboard/`](dashboard/). To open it, refresh the model and save the final `.pbix`, follow [`docs/dashboard.md`](docs/dashboard.md).
 
 ---
 
@@ -164,6 +164,8 @@ artifacts/e2e/
 ├─ quality_report.json
 ├─ findings.json
 ├─ execution_by_entity.csv
+├─ category_summary.csv
+├─ department_summary.csv
 ├─ gold_summary.csv
 └─ checksums.sha256
 ```
@@ -172,7 +174,7 @@ artifacts/e2e/
 
 ## Metrics
 
-> Completed with E2E and real BYOD data. No invented numbers.
+> Measured by the pipeline on the real BYOD run (2026-11-18). No hand-edited numbers.
 
 | Metric | Value |
 |---|---|

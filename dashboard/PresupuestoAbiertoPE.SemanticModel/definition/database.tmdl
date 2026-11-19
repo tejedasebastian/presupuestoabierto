@@ -1,0 +1,3 @@
+/// PresupuestoAbiertoPE semantic model: municipal budget execution 2025 (BYOD MEF).
+database PresupuestoAbiertoPE
+	compatibilityLevel: 1702

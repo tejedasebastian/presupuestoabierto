@@ -1,0 +1,101 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/powerbi-desktop-samples/main/Report%20Theme%20JSON%20Schema/reportThemeSchema-2.153.json",
+  "name": "CivicDataEditorial-7f3a9c21.json",
+  "dataColors": ["#0F766E", "#0F172A", "#B45309", "#94A3B8", "#D1FAE5", "#F59E0B", "#334155", "#E2E8F0"],
+  "good": "#0F766E",
+  "neutral": "#B45309",
+  "bad": "#B91C1C",
+  "maximum": "#0F766E",
+  "center": "#B45309",
+  "minimum": "#D1FAE5",
+  "null": "#94A3B8",
+  "foreground": "#0F172A",
+  "foregroundNeutralSecondary": "#475569",
+  "foregroundNeutralTertiary": "#64748B",
+  "background": "#FFFFFF",
+  "backgroundLight": "#F1F5F9",
+  "backgroundNeutral": "#E2E8F0",
+  "tableAccent": "#0F766E",
+  "textClasses": {
+    "callout": { "fontSize": 28, "fontFace": "Segoe UI Semibold", "color": "#0F172A" },
+    "title": { "fontSize": 14, "fontFace": "Segoe UI Semibold", "color": "#0F172A" },
+    "header": { "fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#0F172A" },
+    "label": { "fontSize": 10, "fontFace": "Segoe UI", "color": "#475569" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#E2E8F0" } }, "radius": 8, "width": 1 }],
+        "dropShadow": [{ "show": false }],
+        "padding": [{ "top": 8, "bottom": 8, "left": 8, "right": 8 }],
+        "visualHeader": [{ "show": false }],
+        "title": [{ "show": false }]
+      }
+    },
+    "textbox": {
+      "*": {
+        "background": [{ "show": false }],
+        "border": [{ "show": false }],
+        "padding": [{ "top": 0, "bottom": 0, "left": 0, "right": 0 }]
+      }
+    },
+    "actionButton": {
+      "*": {
+        "background": [{ "show": false }],
+        "border": [{ "show": false }]
+      }
+    },
+    "cardVisual": {
+      "*": {
+        "value": [{ "bold": true, "$id": "default" }],
+        "label": [{ "show": true, "$id": "default" }],
+        "title": [{ "show": false }],
+        "spacing": [{ "verticalSpacing": 2, "$id": "default" }],
+        "padding": [{ "paddingUniform": 8, "$id": "default" }],
+        "layout": [{ "paddingUniform": 0, "$id": "default" }]
+      }
+    },
+    "barChart": {
+      "*": {
+        "labels": [{ "show": true, "fontSize": 10, "color": { "solid": { "color": "#0F172A" } }, "labelPosition": "OutsideEnd" }],
+        "valueAxis": [{ "show": false, "gridlineShow": false, "showAxisTitle": false }],
+        "categoryAxis": [{ "show": true, "fontSize": 9, "labelColor": { "solid": { "color": "#475569" } }, "showAxisTitle": false, "gridlineShow": false, "innerPadding": 20 }],
+        "dataPoint": [{ "borderShow": false }],
+        "legend": [{ "show": false }]
+      }
+    },
+    "tableEx": {
+      "*": {
+        "columnHeaders": [{
+          "autoSizeColumnWidth": true,
+          "columnAdjustment": "growToFit",
+          "backColor": { "solid": { "color": "#F1F5F9" } },
+          "fontColor": { "solid": { "color": "#0F172A" } },
+          "fontSize": 10,
+          "bold": true
+        }],
+        "values": [{
+          "backColorPrimary": { "solid": { "color": "#FFFFFF" } },
+          "backColorSecondary": { "solid": { "color": "#F8FAFC" } },
+          "fontColorPrimary": { "solid": { "color": "#0F172A" } },
+          "fontColorSecondary": { "solid": { "color": "#0F172A" } },
+          "fontSize": 10
+        }],
+        "grid": [{
+          "gridHorizontal": true,
+          "gridHorizontalColor": { "solid": { "color": "#E2E8F0" } },
+          "gridHorizontalWeight": 1,
+          "gridVertical": false,
+          "rowPadding": 2
+        }]
+      }
+    },
+    "slicer": {
+      "*": {
+        "header": [{ "fontFamily": "Segoe UI Semibold", "textSize": 10, "fontColor": { "solid": { "color": "#0F172A" } }, "outlineStyle": 0 }],
+        "items": [{ "fontFamily": "Segoe UI", "textSize": 10, "fontColor": { "solid": { "color": "#0F172A" } }, "outlineStyle": 0, "padding": 2 }]
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+/// Ejecución por genérica del gasto (contexto nacional, municipalidades 2025).
+table CategorySummary
+	lineageTag: 1f5b8d26-4c9a-4e71-9d3b-7a2f6c5e8b14
+
+	/// Ejecución de la genérica seleccionada (devengado / PIM).
+	measure 'Ejecución %' = DIVIDE(SUM('CategorySummary'[accrued]), SUM('CategorySummary'[pim])) * 100
+		formatString: 0.0"%"
+		displayFolder: Resumen
+		lineageTag: 4e9a2c78-6b1d-4f35-8c7e-2d5a1b9f6c83
+
+	/// Brecha en puntos entre planillas y inversión.
+	measure 'Brecha planillas-inversión' = CALCULATE([Ejecución %], 'CategorySummary'[label] = "PERSONAL Y OBLIGACIONES SOCIALES") - CALCULATE([Ejecución %], 'CategorySummary'[label] = "ADQUISICION DE ACTIVOS NO FINANCIEROS")
+		formatString: 0.0" pp"
+		displayFolder: Resumen
+		lineageTag: 7c3f1a95-2e8b-4d47-b6a2-9f5c3e1d8b60
+
+	/// Etiqueta corta de la genérica para ejes y leyendas.
+	column 'Categoría' = SWITCH('CategorySummary'[label], "PERSONAL Y OBLIGACIONES SOCIALES", "Personal", "ADQUISICION DE ACTIVOS NO FINANCIEROS", "Inversión", "DONACIONES Y TRANSFERENCIAS", "Transferencias", "ADQUISICION DE ACTIVOS FINANCIEROS", "Activos financieros", "SERVICIO DE LA DEUDA PUBLICA", "Deuda pública", "OTROS GASTOS", "Otros gastos", "BIENES Y SERVICIOS", "Bienes y servicios", "PENSIONES Y OTRAS PRESTACIONES SOCIALES", "Pensiones", 'CategorySummary'[label])
+		dataType: string
+		lineageTag: 6d1a8c47-3f5b-4e92-b7c4-1a8e6d2f9c35
+		summarizeBy: none
+
+	column label
+		dataType: string
+		lineageTag: 2a6c9e41-7d3b-4f58-8a1e-5c9f2d7b4e36
+		summarizeBy: none
+		sourceColumn: label
+
+	column code
+		dataType: string
+		isHidden
+		lineageTag: 5b1e7a39-8c4d-4a26-b9f3-1e6d5c8a2f74
+		summarizeBy: none
+		sourceColumn: code
+
+	column pim
+		dataType: double
+		formatString: #,0
+		lineageTag: 8d2f5b17-3a9c-4e64-9f8b-6a1d4c7e2b58
+		summarizeBy: none
+		sourceColumn: pim
+
+	column accrued
+		dataType: double
+		formatString: #,0
+		lineageTag: 3e7a1c94-5f2d-4b86-a1c7-8b4e9d2f6a51
+		summarizeBy: none
+		sourceColumn: accrued
+
+	column execution_pct
+		dataType: double
+		isHidden
+		formatString: 0.0
+		lineageTag: 6f4b8e25-1d7a-4c39-9b5e-2a8f5c1d7e93
+		summarizeBy: none
+		sourceColumn: execution_pct
+
+	partition CategorySummary = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\category_summary.csv"),[Delimiter=",",Encoding=65001,QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source,[PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Promoted,{{"label", type text}, {"code", type text}, {"pim", type number}, {"accrued", type number}, {"execution_pct", type number}})
+				in
+				    Typed

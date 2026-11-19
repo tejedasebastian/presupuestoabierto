@@ -1,0 +1,102 @@
+/// Ejecución presupuestal anual por municipalidad (depto. Lima, 2025).
+table ExecutionByEntity
+	lineageTag: 4a7c9e12-3d5f-4b8a-9e1c-6f2d8b4a7c31
+
+	/// Número de municipalidades del análisis.
+	measure Municipalidades = COUNTROWS('ExecutionByEntity')
+		formatString: #,0
+		displayFolder: Resumen
+		lineageTag: 8e2f5a91-7c4b-4d1e-9a63-1b8c5e7f2d40
+
+	/// Ejecución promedio (devengado / PIM).
+	measure 'Ejecución promedio' = AVERAGE('ExecutionByEntity'[execution_pct])
+		formatString: 0.0"%"
+		displayFolder: Resumen
+		lineageTag: 1c9b7e34-5a2d-4f68-8b3e-9d6a2c4f7e15
+
+	/// Municipalidades por debajo del umbral de alerta de 60%.
+	measure 'Alertas <60%' = CALCULATE(COUNTROWS('ExecutionByEntity'), 'ExecutionByEntity'[execution_pct] < 60)
+		formatString: #,0
+		displayFolder: Resumen
+		lineageTag: 6d4e8a27-1f9c-4b35-a7d2-3e5b9c8a1f62
+
+	/// Nombre de la municipalidad en la fila actual.
+	column 'Municipalidad' = 'ExecutionByEntity'[entity_name]
+		dataType: string
+		lineageTag: 3a6c8e21-9f4b-4d57-8c1e-2b7a5d9f3e64
+		summarizeBy: none
+
+	/// Puesto de la municipalidad (1 = mayor ejecución).
+	measure 'Puesto' = MIN('ExecutionByEntity'[rank])
+		formatString: #,0
+		displayFolder: Ranking
+		lineageTag: 8d2f4a96-1c7b-4e35-9a6f-5e3b8c1d7a42
+
+	/// PIM de la municipalidad en la fila actual.
+	measure 'PIM total' = SUM('ExecutionByEntity'[pim_total])
+		formatString: #,0
+		displayFolder: Ranking
+		lineageTag: 5b9e1c73-4a2d-4f86-b3c7-1e8a6d5f2b94
+
+	/// Devengado de la municipalidad en la fila actual.
+	measure 'Devengado total' = SUM('ExecutionByEntity'[accrued_total])
+		formatString: #,0
+		displayFolder: Ranking
+		lineageTag: 2e7a5c18-6b3f-4d92-a8e4-9c1b7f3a6d50
+
+	/// Porcentaje de ejecución de la municipalidad en la fila actual.
+	measure 'Ejecución % entidad' = AVERAGE('ExecutionByEntity'[execution_pct])
+		formatString: 0.0"%"
+		displayFolder: Ranking
+		lineageTag: 9c4b2e71-8a5d-4f36-b1e7-3d6a9c2f5e08
+
+	column entity_code
+		dataType: string
+		isHidden
+		lineageTag: 3b8e1c47-9a6d-4f25-b1e8-7c4a2d5f9b03
+		summarizeBy: none
+		sourceColumn: entity_code
+
+	column entity_name
+		dataType: string
+		lineageTag: 5f2a7c19-8e4b-4d63-b9a1-2c7e5f8d3a94
+		summarizeBy: none
+		sourceColumn: entity_name
+
+	column pim_total
+		dataType: double
+		formatString: #,0
+		lineageTag: 9a4d2f68-1c7b-4e95-8f3a-6b1d9e4c7a25
+		summarizeBy: none
+		sourceColumn: pim_total
+
+	column accrued_total
+		dataType: double
+		formatString: #,0
+		lineageTag: 2c7f9b35-6a1e-4d84-9c5b-8e3f1a7d6c48
+		summarizeBy: none
+		sourceColumn: accrued_total
+
+	column execution_pct
+		dataType: double
+		formatString: 0.0
+		lineageTag: 7e1a4c92-5b8d-4f36-a2c9-4d6e8b3f1a57
+		summarizeBy: none
+		sourceColumn: execution_pct
+
+	column rank
+		dataType: int64
+		formatString: #,0
+		lineageTag: 8b3d6a14-2f7c-4e59-b8a4-5c9e1d7f3a26
+		summarizeBy: none
+		sourceColumn: rank
+
+	partition ExecutionByEntity = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\execution_by_entity.csv"),[Delimiter=",",Encoding=65001,QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source,[PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Promoted,{{"entity_code", type text}, {"entity_name", type text}, {"pim_total", type number}, {"accrued_total", type number}, {"execution_pct", type number}, {"rank", Int64.Type}})
+				in
+				    Typed

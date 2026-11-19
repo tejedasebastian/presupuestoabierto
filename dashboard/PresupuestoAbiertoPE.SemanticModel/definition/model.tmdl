@@ -1,0 +1,14 @@
+model PresupuestoAbiertoPE
+	culture: es-PE
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-PE
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_ProTooling = ["MCP-PBIModeling"]
+
+ref table ExecutionByEntity
+ref table CategorySummary
+ref table DepartmentSummary
+ref table QualitySummary

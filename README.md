@@ -4,7 +4,7 @@
 
 PresupuestoAbiertoPE convierte la ejecución presupuestal de las municipalidades (exportaciones oficiales del MEF) en un medallion **bronze → silver → gold** con **12 validaciones de calidad**, y responde una pregunta simple: ¿qué municipalidades ejecutan menos, en qué categorías y en qué meses?
 
-> **Estado:** v0.1.0 en desarrollo. Este README describe el producto terminado; las capturas y métricas se completan al cerrar el roadmap.
+> **Estado:** v0.1.0 — pipeline medallion, 12 validaciones, dashboard PBIP y evidencia BYOD 2025.
 >
 > **English:** [README.en.md](README.en.md)
 
@@ -31,7 +31,7 @@ PresupuestoAbiertoPE responde:
 4. **Quality:** 12 validaciones con gate; si hay un `fail`, no se construye gold.
 5. **Gold:** % de ejecución por municipalidad, categoría y mes, con rankings (window functions).
 6. **Hallazgos:** bottom-N de ejecución, categorías críticas y alertas.
-7. **Dashboard:** exports CSV listos para Power BI con especificación reproducible.
+7. **Dashboard:** PBIP reproducible de 2 páginas (panorama y ranking) y exports CSV con checksums.
 
 No scrapea el MEF, no inventa hallazgos y no acusa: describe ejecución presupuestal con lenguaje neutral.
 
@@ -39,13 +39,13 @@ No scrapea el MEF, no inventa hallazgos y no acusa: describe ejecución presupue
 
 ## Demo
 
-> Capturas pendientes de la implementación.
+### Dashboard (BYOD real, 2025)
 
-![Pipeline medallion](docs/assets/pipeline.png)
+![Panorama del dashboard](docs/screenshots/panorama.png)
 
-![Quality report](docs/assets/quality.png)
+![Ranking completo de municipalidades](docs/screenshots/ranking.png)
 
-![Dashboard Power BI](docs/assets/dashboard.png)
+El proyecto PBIP está en [`dashboard/`](dashboard/). Para abrirlo, actualizar el modelo y guardar el `.pbix` final, sigue [`docs/dashboard.md`](docs/dashboard.md).
 
 ---
 
@@ -164,6 +164,8 @@ artifacts/e2e/
 ├─ quality_report.json
 ├─ findings.json
 ├─ execution_by_entity.csv
+├─ category_summary.csv
+├─ department_summary.csv
 ├─ gold_summary.csv
 └─ checksums.sha256
 ```
@@ -172,7 +174,7 @@ artifacts/e2e/
 
 ## Métricas
 
-> Se completan con el E2E y el BYOD real. No se inventan.
+> Cifras medidas por el pipeline sobre el BYOD real (18/11/2026). No se editaron a mano.
 
 | Métrica | Valor |
 |---|---|

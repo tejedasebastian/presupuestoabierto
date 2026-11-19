@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "PresupuestoAbiertoPE"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9d3c1f2a-6b47-4c58-8e91-2f5a7b3c9d10"
+  }
+}

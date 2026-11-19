@@ -1,0 +1,60 @@
+/// Ejecución por departamento (contexto nacional, municipalidades 2025).
+table DepartmentSummary
+	lineageTag: 7b2e5c91-8a4d-4f63-b1e9-3c6f9a2d5e08
+
+	/// Ejecución del departamento seleccionado (devengado / PIM).
+	measure 'Ejecución % departamento' = DIVIDE(SUM('DepartmentSummary'[accrued]), SUM('DepartmentSummary'[pim])) * 100
+		formatString: 0.0"%"
+		displayFolder: Resumen
+		lineageTag: 9a5c1e73-4b8f-4d29-8e6a-1f7c3b5d9a42
+
+	/// Nombre del departamento en formato de título.
+	column 'Departamento' = SWITCH('DepartmentSummary'[label], "ANCASH", "Áncash", "PASCO", "Pasco", "ICA", "Ica", "MADRE DE DIOS", "Madre de Dios", "LA LIBERTAD", "La Libertad", "AYACUCHO", "Ayacucho", "LAMBAYEQUE", "Lambayeque", "HUANCAVELICA", "Huancavelica", "UCAYALI", "Ucayali", "CAJAMARCA", "Cajamarca", "TUMBES", "Tumbes", "JUNIN", "Junín", "APURIMAC", "Apurímac", "PIURA", "Piura", "HUANUCO", "Huánuco", "PUNO", "Puno", "AREQUIPA", "Arequipa", "SAN MARTIN", "San Martín", "AMAZONAS", "Amazonas", "MOQUEGUA", "Moquegua", "LORETO", "Loreto", "PROVINCIA CONSTITUCIONAL DEL CALLAO", "Callao", "CUSCO", "Cusco", "LIMA", "Lima", "TACNA", "Tacna", 'DepartmentSummary'[label])
+		dataType: string
+		lineageTag: 4f8b2d16-7a3c-4e59-b1d8-6c2a9e5f3b74
+		summarizeBy: none
+
+	column label
+		dataType: string
+		lineageTag: 4c8f2a16-9e3b-4d57-a2f1-7b5e8c1d6f93
+		summarizeBy: none
+		sourceColumn: label
+
+	column code
+		dataType: string
+		isHidden
+		lineageTag: 8e1b6d47-2c5a-4f93-9d8e-4a7f1b3c6e25
+		summarizeBy: none
+		sourceColumn: code
+
+	column pim
+		dataType: double
+		formatString: #,0
+		lineageTag: 1d7a9c35-6e2f-4b48-8a5c-9f3d2e7b1c64
+		summarizeBy: none
+		sourceColumn: pim
+
+	column accrued
+		dataType: double
+		formatString: #,0
+		lineageTag: 6a3e8b19-5c7d-4f26-9b1a-2e8c4d7f5a93
+		summarizeBy: none
+		sourceColumn: accrued
+
+	column execution_pct
+		dataType: double
+		isHidden
+		formatString: 0.0
+		lineageTag: 2f9c4e71-8b6a-4d35-a7f2-5c1e9b8d3f46
+		summarizeBy: none
+		sourceColumn: execution_pct
+
+	partition DepartmentSummary = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\department_summary.csv"),[Delimiter=",",Encoding=65001,QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source,[PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Promoted,{{"label", type text}, {"code", type text}, {"pim", type number}, {"accrued", type number}, {"execution_pct", type number}})
+				in
+				    Typed
