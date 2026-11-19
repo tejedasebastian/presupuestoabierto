@@ -392,16 +392,23 @@ def generate_seed_files(base_dir: Path, mode: str, entities: int = 50) -> list[F
         )
         specs.append(FileSpec(path=schema_path, grain="entity_annual"))
 
-        # V2: export below the minimum row count for entity grains.
-        tiny_rows = [
-            _data_row(
-                "150161-301061: MUNICIPALIDAD DISTRITAL DE TINY",
-                [_fmt(100), _fmt(110), _fmt(90), _fmt(80), _fmt(70), _fmt(60), _fmt(50), "55.0"],
-            )
-        ]
+        # V2: monthly export below min_rows (10). Annual exports may be small:
+        # some departments have fewer than 10 municipalities (Callao has 7).
+        ubigee, code, name = _entity_concept(0)
+        tiny_rows = _monthly_rows(0, dirty=False)[:3]
         tiny_path = out_dir / f"seed_dirty_rowcount_{YEAR}.xls"
-        tiny_path.write_text(_render_export("Municipalidad", tiny_rows), encoding="utf-8")
-        specs.append(FileSpec(path=tiny_path, grain="entity_annual"))
+        tiny_path.write_text(_render_export("Mes", tiny_rows), encoding="utf-8")
+        specs.append(
+            FileSpec(
+                path=tiny_path,
+                grain="entity_monthly",
+                context={
+                    "entity_code": code,
+                    "entity_ubigee": ubigee,
+                    "entity_name": name,
+                },
+            )
+        )
 
         # V7: monthly export for an unknown pliego (referential violation).
         ref_rows = _monthly_rows(2, dirty=False)
