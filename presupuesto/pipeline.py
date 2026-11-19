@@ -26,3 +26,91 @@ def run_smoke(settings: Settings) -> dict:
         "output_path": str(out_path),
         "environment": settings.environment,
     }
+
+
+def _ingest_specs(settings: Settings, specs) -> tuple[list[dict], list[dict]]:
+    """Parse every export spec; collect rows and explicit file failures.
+
+    File-level failures (schema, minimum rows) skip the file: a truncated or
+    schema-broken export is not trustworthy data. Everything else is ingested
+    so the quality layer can judge it.
+    """
+    from presupuesto.domain.errors import ValidationError
+    from presupuesto.ingest.byod import parse_export
+
+    rows: list[dict] = []
+    failures: list[dict] = []
+    for spec in specs:
+        try:
+            file_rows = parse_export(spec.path, grain=spec.grain, entity_context=spec.context)
+            if (
+                spec.grain in {"entity_annual", "entity_monthly"}
+                and len(file_rows) < settings.min_rows
+            ):
+                raise ValidationError(
+                    "Export is below the minimum row count for its grain.",
+                    {"file": spec.path.name, "grain": spec.grain, "rows": len(file_rows)},
+                )
+            rows.extend(file_rows)
+        except ValidationError as exc:
+            failures.append(
+                {
+                    "file": spec.path.name,
+                    "grain": spec.grain,
+                    "reason": exc.message,
+                    "details": exc.details,
+                }
+            )
+    return rows, failures
+
+
+def run_seed(settings: Settings, mode: str = "clean") -> dict:
+    """Generate the seed exports and ingest them through the real BYOD path."""
+    from presupuesto.ingest.bronze import write_bronze
+    from presupuesto.ingest.seed import generate_seed_files
+
+    spark = get_spark(app_name="presupuesto-seed", driver_memory=settings.driver_memory)
+
+    specs = generate_seed_files(settings.medallion_dir / "seed", mode)
+    rows, file_failures = _ingest_specs(settings, specs)
+    out = write_bronze(spark, rows, settings.medallion_dir)
+
+    df = spark.read.format("delta").load(str(out))
+    grain_counts = {row["grain"]: row["count"] for row in df.groupBy("grain").count().collect()}
+    entities = df.filter(df.grain == "entity_annual").select("entity_code").distinct().count()
+
+    return {
+        "status": "ok",
+        "source": "seed",
+        "mode": mode,
+        "rows_ingested": len(rows),
+        "grain_counts": grain_counts,
+        "entities": entities,
+        "files_parsed": len(specs) - len(file_failures),
+        "file_failures": file_failures,
+        "bronze_path": str(out),
+    }
+
+
+def run_volume(settings: Settings, entities: int | None = None) -> dict:
+    """Volume stress run: synthetic cross rows written directly to bronze."""
+    from presupuesto.ingest.bronze import write_bronze
+    from presupuesto.ingest.seed import generate_volume_rows
+
+    spark = get_spark(app_name="presupuesto-volume", driver_memory=settings.driver_memory)
+    volume_entities = entities or settings.volume_entities
+
+    rows = generate_volume_rows(volume_entities)
+    out = write_bronze(spark, rows, settings.medallion_dir)
+    df = spark.read.format("delta").load(str(out))
+
+    return {
+        "status": "ok",
+        "source": "volume",
+        "rows_ingested": len(rows),
+        "entities": volume_entities,
+        "grain_counts": {
+            row["grain"]: row["count"] for row in df.groupBy("grain").count().collect()
+        },
+        "bronze_path": str(out),
+    }

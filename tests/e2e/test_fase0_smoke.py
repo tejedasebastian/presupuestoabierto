@@ -11,8 +11,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SMOKE_PATH = REPO_ROOT / "data" / "medallion" / "smoke"
 
@@ -44,20 +42,11 @@ def test_cli_smoke_run() -> None:
     assert (Path(payload["output_path"]) / "_delta_log").is_dir()
 
 
-@pytest.fixture(scope="module")
-def spark_session():
-    from presupuesto.shared.spark import get_spark
-
-    spark = get_spark(app_name="presupuesto-e2e-fase0")
-    yield spark
-    spark.stop()
-
-
 def test_shared_session_writes_delta(spark_session) -> None:
     """The shared session factory produces exactly one session with Delta."""
     from presupuesto.shared.spark import get_spark
 
-    again = get_spark(app_name="presupuesto-e2e-fase0")
+    again = get_spark(app_name="presupuesto-e2e", driver_memory="768m")
     assert again is spark_session
 
     out = SMOKE_PATH / "shared_check"

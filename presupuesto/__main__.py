@@ -30,6 +30,14 @@ def main(argv: list[str] | None = None) -> int:
             from presupuesto.pipeline import run_smoke
 
             summary = run_smoke(settings)
+        elif args.source == "seed":
+            from presupuesto.pipeline import run_seed
+
+            summary = run_seed(settings, mode=args.mode)
+        elif args.source == "volume":
+            from presupuesto.pipeline import run_volume
+
+            summary = run_volume(settings, entities=args.volume_entities)
         else:
             sys.stderr.write(f"source '{args.source}' is not implemented yet\n")
             return 2

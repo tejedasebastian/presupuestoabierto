@@ -57,28 +57,34 @@ chore: initialize presupuestoabierto project
 
 ## Fase 1 — Seed sintético y bronze
 
-- [ ] Generador de seed determinista (`ingest/seed.py`):
-  - modo `clean`: ~50 municipalidades × 12 meses × 6 categorías,
+- [x] Generador de seed determinista (`ingest/seed.py`):
+  - modo `clean`: 25 departamentos + 50 municipalidades anuales + 2 municipalidades mensuales + 6 categorías reales,
   - modo `dirty`: una violación exacta por cada una de las 12 validaciones,
-  - modo `volume`: 1,000 municipalidades equivalentes (perf).
-- [ ] Lector BYOD (`ingest/byod.py`) de las tablas HTML-`.xls` de la Consulta Amigable (contrato verificado en `data/raw/README.md`): parse de filas, código `UBIGEE-PLIEGO`, montos con comas, encabezado con año y fecha de consulta.
-- [ ] Escritura bronze en Delta con `source_file`, `ingested_at`, `row_hash`.
-- [ ] Fallo explícito si faltan columnas obligatorias.
-- [ ] Determinismo: misma semilla → mismo bronze (mismos conteos).
+  - modo `volume`: 12,800 municipalidades equivalentes (perf, filas directas).
+- [x] Lector BYOD (`ingest/byod.py`) de las tablas HTML-`.xls` de la Consulta Amigable (contrato verificado en `data/raw/README.md`): parse de filas, código `UBIGEE-PLIEGO`, montos con comas, encabezado con año y fecha de consulta.
+- [x] Escritura bronze en Delta con `source_file`, `ingested_at`, `row_hash`.
+- [x] Fallo explícito si faltan columnas obligatorias.
+- [x] Determinismo: misma semilla → mismo bronze (mismos conteos).
 
 **E2E del checkpoint:**
 
-- Seed clean → bronze con conteos exactos (filas, entidades, categorías, meses).
-- Seed dirty → bronze ingiere todo (las violaciones se detectan después, en quality).
-- HTML sintético estilo Consulta Amigable (fila `"150122-301271: MUNICIPALIDAD DISTRITAL DE MIRAFLORES"`) → mapping correcto a bronze.
-- HTML sin columna `DEVENGADO` → error explícito con la lista de faltantes.
-- Re-ingesta del mismo archivo → no duplica filas (idempotente por `row_hash`).
+- [x] Seed clean → bronze con conteos exactos (filas, entidades, categorías, meses).
+- [x] Seed dirty → bronze ingiere todo lo parseable (las violaciones se detectan después, en quality); archivos con fallo file-level se reportan explícitos.
+- [x] HTML sintético estilo Consulta Amigable (fila `"150122-301271: MUNICIPALIDAD DISTRITAL DE MIRAFLORES"`) → mapping correcto a bronze.
+- [x] HTML sin columna `DEVENGADO` → error explícito con la lista de faltantes.
+- [x] Re-ingesta del mismo archivo → no duplica filas (idempotente por overwrite).
+
+**Evidencia local:**
+
+- `pytest tests/e2e -v` → **8 passed** (Fase 0 + Fase 1).
+- `python -m presupuesto run --source seed --mode clean` → JSON con `rows_ingested: 105`, `grain_counts` exactos, `files_parsed: 5`, `file_failures: []`.
+- `ruff format` y `ruff check` → All checks passed.
 
 **Criterio de aceptación:**
 
-- Bronze conserva las columnas originales en español + procedencia.
-- El E2E corre en CI sin red.
-- El seed es reproducible con una semilla fija.
+- [x] Bronze conserva el concepto original (`concept_raw`) + columnas canónicas + procedencia.
+- [x] El E2E corre en CI sin red (el seed genera HTML local).
+- [x] El seed es reproducible (montos deterministas por índice, sin RNG).
 
 **Commit sugerido:**
 
