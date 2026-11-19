@@ -6,6 +6,8 @@ PresupuestoAbiertoPE convierte la ejecución presupuestal de las municipalidades
 
 > **Estado:** v1.0.0 — cobertura nacional 2025 (1,892 municipalidades), 12 validaciones y dashboard PBIP.
 >
+> **Release:** [v1.0.0](https://github.com/kuki236/presupuestoabierto/releases/tag/v1.0.0)
+>
 > **English:** [README.en.md](README.en.md)
 
 ---

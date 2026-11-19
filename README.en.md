@@ -6,6 +6,8 @@ PresupuestoAbiertoPE turns municipal budget execution (official exports from Per
 
 > **Status:** v1.0.0 — national 2025 coverage (1,892 municipalities), 12 validations and PBIP dashboard.
 >
+> **Release:** [v1.0.0](https://github.com/kuki236/presupuestoabierto/releases/tag/v1.0.0)
+>
 > **Español:** [README.md](README.md)
 
 ---

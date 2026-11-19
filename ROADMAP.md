@@ -301,7 +301,7 @@ chore: release v0.1.0
 - [ ] PBIX nacional en Git (guardado manual desde Power BI Desktop).
 - [x] Diccionario de datos y diagrama de arquitectura.
 - [ ] Test con una persona externa (kit en `docs/user-test-v1.0.0.md`; pendiente de ejecutar).
-- [ ] Tag y release `v1.0.0`.
+- [x] Tag y release `v1.0.0`.
 
 **Evidencia del checkpoint:**
 
@@ -312,13 +312,16 @@ chore: release v0.1.0
 - PBIR `validate` → **0 errores, 0 warnings**; modelo TMDL 4 tablas / 11 medidas; Desktop refrescado con 1,892 filas.
 - Capturas en `docs/screenshots/panorama.png` y `ranking.png`.
 - Manifiesto con SHA-256 de los 28 archivos fuente y checksums de los 6 payloads.
+- Release `v1.0.0` con 8 artefactos: https://github.com/kuki236/presupuestoabierto/releases/tag/v1.0.0
+- CI verde en el commit de release: pipeline 17m22s + volume 41s.
 
 **Criterio de aceptación:**
 
 - [x] Cobertura nacional y 12/12 con datos reales.
 - [x] Dashboard nacional validado y capturado.
 - [x] Documentación de datos, arquitectura y hallazgos.
-- [ ] PBIX nacional en Git y release `v1.0.0` con artefactos.
+- [x] Release `v1.0.0` con 8 artefactos y CI verde.
+- [ ] PBIX nacional en Git (guardado manual desde Power BI Desktop).
 - [ ] Feedback de una persona externa.
 
 ---
