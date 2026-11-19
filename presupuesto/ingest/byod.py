@@ -30,7 +30,7 @@ from presupuesto.domain.errors import ValidationError
 REQUIRED_COLUMNS = ("PIA", "PIM", "DEVENGADO", "GIRADO")
 
 _ENTITY_RE = re.compile(r"^\s*(\d{6})-(\d{0,6}):\s*(.*?)\s*$")
-_MONTH_RE = re.compile(r"^\s*(\d{1,2}):\s*'?(\w+)\s*$")
+_MONTH_RE = re.compile(r"^\s*(\d{1,2}):\s*'(\w+)\s*$")
 _CATEGORY_RE = re.compile(r"^\s*(\d+-\d+):\s*(.*?)\s*$")
 _DEPARTMENT_RE = re.compile(r"^\s*(\d{2}):\s*(.*?)\s*$")
 _YEAR_RE = re.compile(
@@ -97,7 +97,7 @@ def _require_columns(soup: BeautifulSoup, file_name: str) -> None:
     if header is None:
         raise ValidationError(
             "Export is missing the header table (MapTable).",
-            {"file": file_name},
+            {"file": file_name, "check": "raw_schema_present"},
         )
     labels = {cell.get_text(strip=True).upper() for cell in header.find_all("td")}
     labels |= {(cell.get("title") or "").upper() for cell in header.find_all("td")}
@@ -109,7 +109,7 @@ def _require_columns(soup: BeautifulSoup, file_name: str) -> None:
     if missing:
         raise ValidationError(
             "Export is missing required columns.",
-            {"file": file_name, "missing": missing},
+            {"file": file_name, "missing": missing, "check": "raw_schema_present"},
         )
 
 
@@ -126,7 +126,7 @@ def _classify_concept(concept: str) -> dict:
     if category:
         return {"category_code": category.group(1), "category": category.group(2)}
     month = _MONTH_RE.match(concept)
-    if month and not month.group(2).replace(" ", "").isdigit():
+    if month:
         return {"month": int(month.group(1))}
     department = _DEPARTMENT_RE.match(concept)
     if department:

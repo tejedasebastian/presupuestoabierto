@@ -2,8 +2,14 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from presupuesto.config import Settings
 from presupuesto.shared.spark import delta_package_version, get_spark
+
+
+def _artifacts_dir() -> Path:
+    return Path(__file__).resolve().parents[1] / "artifacts" / "e2e"
 
 
 def run_smoke(settings: Settings) -> dict:
@@ -49,7 +55,12 @@ def _ingest_specs(settings: Settings, specs) -> tuple[list[dict], list[dict]]:
             ):
                 raise ValidationError(
                     "Export is below the minimum row count for its grain.",
-                    {"file": spec.path.name, "grain": spec.grain, "rows": len(file_rows)},
+                    {
+                        "file": spec.path.name,
+                        "grain": spec.grain,
+                        "rows": len(file_rows),
+                        "check": "raw_row_count",
+                    },
                 )
             rows.extend(file_rows)
         except ValidationError as exc:
@@ -80,6 +91,16 @@ def run_seed(settings: Settings, mode: str = "clean") -> dict:
     silver_df, quarantine_df = build_silver(spark, bronze_df)
     silver_path, quarantine_path = write_silver(silver_df, quarantine_df, settings.medallion_dir)
 
+    from presupuesto.quality.registry import run_quality, write_quality_report
+
+    quality = run_quality(
+        silver_df,
+        file_failures=file_failures,
+        files_attempted=len(specs),
+        settings=settings,
+    )
+    report_path = write_quality_report(quality, _artifacts_dir())
+
     grain_counts = {
         row["grain"]: row["count"] for row in bronze_df.groupBy("grain").count().collect()
     }
@@ -97,6 +118,9 @@ def run_seed(settings: Settings, mode: str = "clean") -> dict:
         "rows_ingested": len(rows),
         "silver_rows": silver_df.count(),
         "quarantined_rows": quarantine_df.count(),
+        "quality_summary": quality["summary"],
+        "quality_gate": quality["gate"],
+        "quality_report": str(report_path),
         "grain_counts": grain_counts,
         "entities": entities,
         "files_parsed": len(specs) - len(file_failures),

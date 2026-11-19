@@ -200,10 +200,10 @@ def _annual_rows(entities: int, dirty: bool) -> list[str]:
                 ],
             )
         )
-        # V3 unparseable PIM.
+        # V3 unparseable PIM (pliego outside the clean seed range 301001-301050).
         rows.append(
             _data_row(
-                "150150-301050: MUNICIPALIDAD DISTRITAL DE PARSE BAD",
+                "150150-301051: MUNICIPALIDAD DISTRITAL DE PARSE BAD",
                 [_fmt(100), "12,3x4", _fmt(90), _fmt(80), _fmt(70), _fmt(60), _fmt(50), "60.0"],
             )
         )
@@ -261,7 +261,7 @@ def _monthly_rows(entity_index: int, dirty: bool, drop_months: int = 0) -> list[
     months = list(range(1, 13))
     if drop_months:
         months = months[: 12 - drop_months]
-    per_month = annual_accrued // 12
+    per_month = annual_accrued // len(months)
     rows: list[str] = []
     remaining = annual_accrued
     for position, month in enumerate(months):
@@ -339,7 +339,9 @@ def generate_seed_files(base_dir: Path, mode: str, entities: int = 50) -> list[F
     # Monthly entities 1 and 2 (index 0 and 1), like the real Miraflores export.
     for entity_index, _context_code in ((0, "301001"), (1, "301002")):
         ubigee, code, name = _entity_concept(entity_index)
-        drop = 6 if dirty and entity_index == 1 else 0  # V12 coverage gap
+        # V12 coverage gap: 10 months passes the file-level minimum (10 rows)
+        # but fails the coverage validation (12 required months).
+        drop = 2 if dirty and entity_index == 1 else 0
         monthly_path = out_dir / f"seed_municipio_{code}_mes_{YEAR}.xls"
         monthly_path.write_text(
             _render_export("Mes", _monthly_rows(entity_index, dirty, drop_months=drop)),

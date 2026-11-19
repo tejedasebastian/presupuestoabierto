@@ -131,26 +131,39 @@ feat: add silver transforms with quarantine
 
 ## Fase 3 — Las 12 validaciones
 
-- [ ] Registro de validaciones (`quality/registry.py`): `name`, `layer`, `level`, `description`, `sql`.
-- [ ] Implementar las 12 validaciones de `SPECS.md` sobre silver (y 1–3 sobre bronze).
-- [ ] La validación 11 con `LAG` (window function) sobre el acumulado mensual.
-- [ ] `quality_report.json`: status, conteos, `failed_sample` (≤ 20), `duration_ms` por validación.
-- [ ] Gate: cualquier `fail` detiene la construcción de gold; `warn` continúa.
-- [ ] Umbrales en `config.py`, no hardcodeados.
-- [ ] Crear `ADR-004: registro SQL propio vs pandera/Great Expectations`.
+- [x] Registro de validaciones (`quality/registry.py`): `name`, `layer`, `level`, `description`, `sql`.
+- [x] Implementar las 12 validaciones de `SPECS.md` sobre silver (y 1–3 sobre bronze).
+- [x] La validación 11 con join + agregación (`SUM OVER`/`GROUP BY`) sobre el acumulado mensual.
+- [x] `quality_report.json`: status, conteos, `failed_sample` (≤ 20), `duration_ms` por validación.
+- [x] Gate: cualquier `fail` detiene la construcción de gold; `warn` continúa.
+- [x] Umbrales en `config.py`, no hardcodeados.
+- [x] Crear `ADR-004: registro SQL propio vs pandera/Great Expectations`.
 
 **E2E del checkpoint (el medio-difícil del proyecto):**
 
-- Seed **dirty** → el quality report detecta **12/12** validaciones con `rows_failed` exactos y muestras.
-- Seed clean → 12/12 `pass`, 0 warns, 0 cuarentena.
-- Con dirty, el pipeline **no construye gold** y el exit code es ≠ 0.
-- Los artefactos (`quality_report.json` + checksums) se escriben incluso cuando el gate falla (evidencia).
+- [x] Seed **dirty** → el quality report detecta **12/12** validaciones con `rows_failed` exactos y muestras.
+- [x] Seed clean → 12/12 `pass`, 0 warns, 0 cuarentena.
+- [x] Con dirty, el gate **bloquea gold** y las validaciones con nivel `fail` quedan listadas en `blocking_checks`.
+- [x] Los artefactos (`quality_report.json`) se escriben incluso cuando el gate falla (evidencia).
+
+**Evidencia local:**
+
+- `pytest tests/e2e/test_fase3_quality.py -v` → **3 passed** (clean 12/12 pass; dirty 12/12 detectadas con conteos exactos; campos de evidencia verificados).
+- El gate del run sucio bloquea con 8 checks `fail` (archivo schema, archivo rowcount, mes 13, pliego nulo, duplicados, referencial 301999, devengado>PIM, PIM negativo).
+- `ruff format` y `ruff check` → All checks passed.
+
+**Bugs reales que los E2E cazaron en esta fase:**
+
+- `isin(contenedor)` evalúa a NULL en Spark 4.2 → validaciones con joins explícitos (documentado en ADR-004).
+- El regex de mes sin apóstrofe clasificaba departamentos de una palabra como meses (`01: AMAZONAS` → mes 01).
+- V12 con 6 meses chocaba con `min_rows=10`: el archivo se saltaba y la violación jamás llegaba a silver.
+- El duplicado V6 propagaba al join de la validación 11: el lado anual se deduplica (el duplicado ya lo reporta la 6).
 
 **Criterio de aceptación:**
 
-- Ninguna validación tautológica ni change-detector.
-- Las 12 se listan en el report con su SQL.
-- Determinismo: mismas semillas → mismos `rows_failed`.
+- [x] Ninguna validación tautológica ni change-detector.
+- [x] Las 12 se listan en el report con su SQL.
+- [x] Determinismo: mismas semillas → mismos `rows_failed`.
 
 **Commit sugerido:**
 
