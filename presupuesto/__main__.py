@@ -16,7 +16,7 @@ def main(argv: list[str] | None = None) -> int:
         choices=["smoke", "seed", "byod"],
     )
     run_parser.add_argument("--mode", default="clean", choices=["clean", "dirty", "volume"])
-    run_parser.add_argument("--file", default=None, help="BYOD file path (for --source byod)")
+    run_parser.add_argument("--file", default=None, help="BYOD manifest path (for --source byod)")
     run_parser.add_argument("--volume-entities", type=int, default=None)
 
     args = parser.parse_args(argv)
@@ -38,6 +38,13 @@ def main(argv: list[str] | None = None) -> int:
             from presupuesto.pipeline import run_volume
 
             summary = run_volume(settings, entities=args.volume_entities)
+        elif args.source == "byod":
+            from pathlib import Path
+
+            from presupuesto.pipeline import run_byod
+
+            manifest = Path(args.file) if args.file else None
+            summary = run_byod(settings, manifest_path=manifest)
         else:
             sys.stderr.write(f"source '{args.source}' is not implemented yet\n")
             return 2

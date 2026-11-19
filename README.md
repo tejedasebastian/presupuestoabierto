@@ -176,11 +176,13 @@ artifacts/e2e/
 
 | Métrica | Valor |
 |---|---|
-| Registros procesados | `[pendiente]` |
-| Municipalidades cubiertas | `[pendiente]` |
-| Score de calidad (12/12) | `[pendiente]` |
-| Duración del pipeline (volume) | `[pendiente]` |
-| Hallazgos con datos reales | `[pendiente: BYOD del usuario]` |
+| Registros procesados (BYOD real) | 218 |
+| Municipalidades cubiertas (depto. Lima) | 171 |
+| Score de calidad (BYOD real) | **12/12 pass** |
+| Duración del pipeline (BYOD real, local) | 112.9 s |
+| Ejecución promedio | 84.7% |
+| Hallazgos con datos reales | 9 alertas < 60%; peor: Colonia 21.8% |
+| Volume (CI) | 12,800 entidades ≈ 934k filas |
 
 ---
 

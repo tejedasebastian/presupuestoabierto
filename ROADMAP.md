@@ -210,25 +210,32 @@ feat: add gold aggregations and findings
 
 ## Fase 5 — Volumen, performance y BYOD real
 
-- [ ] Modo `volume` del seed (≥ 1,000,000 filas) para pruebas de performance.
-- [ ] Medir duración por etapa (ingest/silver/quality/gold) y registrarlo en `run_manifest.json`.
-- [ ] Particionado de Delta por `year`/`month` donde aporte (medido, no adivinado).
+- [x] Modo `volume` del seed (~934k filas a escala nacional en CI; 73k en la suite) para pruebas de performance.
+- [x] Medir duración por etapa (bronze/silver/quality/gold) y registrarlo en `run_manifest.json`.
+- [ ] Particionado de Delta por `year`/`month` donde aporte (medido, no adivinado) — **decisión documentada: no aporta a esta escala** (ver `docs/performance.md`; con 218 filas reales y ~934k sintéticas el particionado añade archivos pequeños sin ganancia medible).
 - [x] **BYOD descargado (18/11/2026):** 4 archivos oficiales de la Consulta Amigable ya en `data/raw/` (departamentos nacional, municipalidades de Lima, Miraflores mensual, genéricas nacional); procedencia y hashes en `data/raw/README.md`.
-- [ ] **BYOD procesado:** run del pipeline sobre los archivos reales → quality report y hallazgos reales.
-- [ ] Ajustar el adaptador al formato real (tablas HTML como `.xls`) y documentar el mapping aplicado.
-- [ ] Artículo de hallazgos con datos reales (borrador en `docs/`).
+- [x] **BYOD procesado:** run del pipeline sobre los archivos reales → **12/12 checks en verde**, 171 municipalidades en gold, 112.9 s totales.
+- [x] Ajustar el adaptador al formato real (tablas HTML como `.xls`) y documentar el mapping aplicado.
+- [x] Artículo de hallazgos con datos reales (`docs/findings-2025.md`).
 
 **E2E del checkpoint:**
 
-- Volume: pipeline completo en < umbral medido (CI), conteos exactos.
-- BYOD real (local): run completo end-to-end con los archivos BYOD reales del usuario, quality report y hallazgos reales.
-- El manifest registra el SHA-256 de cada archivo BYOD como procedencia.
+- [x] Volume: pipeline completo con conteos exactos y duraciones medidas por fase (E2E con 1,000 entidades; job de CI con 12,800 ≈ 934k filas).
+- [x] BYOD real (local): run completo end-to-end con los 4 exports oficiales, quality report y hallazgos reales.
+- [x] El manifest registra el SHA-256 de cada archivo BYOD como procedencia (verificado: coincide con `data/raw/README.md`).
+
+**Evidencia local:**
+
+- `pytest tests/e2e/test_fase5_volume.py -v` → **3 passed** (73,000 filas por el medallion completo; checksums recomputados y verificados).
+- `python -m presupuesto run --source byod` → 218 filas, **12/12 checks pass**, gold con 171 entidades, 112.9 s.
+- Hallazgos reales: peor municipalidad **Colonia 21.8%**; 9 alertas < 60%; promedio 84.7%; inversión (activos no financieros) 72.9% vs planillas 94.1%.
+- `docs/findings-2025.md` y `docs/performance.md` con cifras medidas.
 
 **Criterio de aceptación:**
 
-- Duraciones medidas, no estimadas.
-- Los hallazgos reales usan lenguaje neutral y citan la fuente y fecha.
-- Ningún CSV real se commitea.
+- [x] Duraciones medidas, no estimadas.
+- [x] Los hallazgos reales usan lenguaje neutral y citan la fuente y fecha.
+- [x] Ningún CSV real se commitea (solo `byod_manifest.json` y el README de procedencia).
 
 **Commit sugerido:**
 

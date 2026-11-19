@@ -176,11 +176,13 @@ artifacts/e2e/
 
 | Metric | Value |
 |---|---|
-| Records processed | `[pending]` |
-| Municipalities covered | `[pending]` |
-| Quality score (12/12) | `[pending]` |
-| Pipeline runtime (volume) | `[pending]` |
-| Findings from real data | `[pending: user BYOD]` |
+| Records processed (real BYOD) | 218 |
+| Municipalities covered (Lima dept.) | 171 |
+| Quality score (real BYOD) | **12/12 pass** |
+| Pipeline runtime (real BYOD, local) | 112.9 s |
+| Average execution | 84.7% |
+| Findings from real data | 9 alerts < 60%; worst: Colonia 21.8% |
+| Volume (CI) | 12,800 entities ≈ 934k rows |
 
 ---
 

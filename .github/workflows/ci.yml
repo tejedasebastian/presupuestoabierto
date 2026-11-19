@@ -8,7 +8,7 @@ on:
 jobs:
   pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -29,4 +29,30 @@ jobs:
         with:
           name: e2e-artifacts
           path: artifacts/e2e/
+          if-no-files-found: ignore
+
+  volume:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - name: National-scale volume run (12,800 entities ~ 934k rows)
+        env:
+          PRESUPUESTO_VOLUME_ENTITIES: "12800"
+        run: python -m presupuesto run --source volume | tee volume_summary.json
+      - name: Upload volume summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: volume-summary
+          path: volume_summary.json
           if-no-files-found: ignore

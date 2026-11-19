@@ -13,6 +13,7 @@ __pycache__/
 # BYOD data: never commit raw exports (README.md with provenance IS committed)
 data/raw/*
 !data/raw/README.md
+!data/raw/byod_manifest.json
 
 # Medallion (Delta tables)
 data/medallion/

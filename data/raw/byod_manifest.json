@@ -1,0 +1,29 @@
+{
+  "label": "byod-2025",
+  "year": 2025,
+  "query_date": "18-noviembre-2026",
+  "source": "Consulta Amigable del MEF (SIAF), apps5.mineco.gob.pe",
+  "files": [
+    {
+      "path": "consulta_amigable_departamentos_2025.xls",
+      "grain": "department"
+    },
+    {
+      "path": "consulta_amigable_lima_municipalidades_2025.xls",
+      "grain": "entity_annual"
+    },
+    {
+      "path": "consulta_amigable_miraflores_mes_2025.xls",
+      "grain": "entity_monthly",
+      "context": {
+        "entity_code": "301271",
+        "entity_ubigee": "150122",
+        "entity_name": "MUNICIPALIDAD DISTRITAL DE MIRAFLORES"
+      }
+    },
+    {
+      "path": "consulta_amigable_municipalidades_generica_2025.xls",
+      "grain": "category_national"
+    }
+  ]
+}

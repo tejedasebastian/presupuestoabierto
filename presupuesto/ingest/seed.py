@@ -433,11 +433,14 @@ def generate_volume_rows(entities: int, categories: int = 6) -> list[dict]:
     for entity_index in range(entities):
         ubigee, code, name = _entity_concept(entity_index)
         amounts = _entity_amounts(entity_index)
+        entity_rows: list[dict] = []
+        annual_accrued = 0
         for cat_index, (cat_code, cat_name) in enumerate(CATEGORIES[:categories]):
             share = (amounts["pim"] // categories) + cat_index * 1_000
             monthly = share // 12
+            annual_accrued += monthly * 12
             for month in range(1, 13):
-                rows.append(
+                entity_rows.append(
                     {
                         "grain": "entity_monthly",
                         "entity_ubigee": ubigee,
@@ -462,4 +465,31 @@ def generate_volume_rows(entities: int, categories: int = 6) -> list[dict]:
                         "concept_raw": f"{month}: '{MONTHS[month - 1]}",
                     }
                 )
+        # Annual row consistent with the monthly sum (validation 11 passes).
+        entity_rows.append(
+            {
+                "grain": "entity_annual",
+                "entity_ubigee": ubigee,
+                "entity_code": code,
+                "entity_name": name,
+                "year": YEAR,
+                "month": None,
+                "category": None,
+                "category_code": None,
+                "department": None,
+                "department_code": None,
+                "pia": float(amounts["pia"]),
+                "pim": float(amounts["pim"]),
+                "certification": None,
+                "annual_commitment": None,
+                "monthly_commitment": None,
+                "accrued": float(annual_accrued),
+                "paid": None,
+                "execution_pct": None,
+                "query_date": SEED_QUERY_DATE,
+                "source_file": f"volume_{entity_index}",
+                "concept_raw": f"{ubigee}-{code}: {name}",
+            }
+        )
+        rows.extend(entity_rows)
     return rows
