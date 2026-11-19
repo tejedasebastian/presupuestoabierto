@@ -16,6 +16,8 @@ PAYLOAD_ARTIFACTS = (
     "quality_report.json",
     "findings.json",
     "execution_by_entity.csv",
+    "category_summary.csv",
+    "department_summary.csv",
     "gold_summary.csv",
 )
 

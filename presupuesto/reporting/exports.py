@@ -18,6 +18,29 @@ EXEC_BY_ENTITY_HEADER = [
 
 GOLD_SUMMARY_HEADER = ["metric", "value"]
 
+FINDINGS_CSV_HEADER = ["label", "code", "pim", "accrued", "execution_pct"]
+
+
+def _write_findings_csv(items: list[dict], path: Path) -> Path:
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle, lineterminator="\n")
+        writer.writerow(FINDINGS_CSV_HEADER)
+        for item in items:
+            writer.writerow(
+                [item["label"], item["code"], item["pim"], item["accrued"], item["execution_pct"]]
+            )
+    return path
+
+
+def write_category_csv(findings: dict, artifacts_dir: Path) -> Path:
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    return _write_findings_csv(findings["categories"], artifacts_dir / "category_summary.csv")
+
+
+def write_department_csv(findings: dict, artifacts_dir: Path) -> Path:
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    return _write_findings_csv(findings["departments"], artifacts_dir / "department_summary.csv")
+
 
 def write_exec_by_entity_csv(df: DataFrame, artifacts_dir: Path) -> Path:
     artifacts_dir.mkdir(parents=True, exist_ok=True)

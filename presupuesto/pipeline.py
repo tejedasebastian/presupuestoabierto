@@ -95,7 +95,12 @@ def _execute_rows(
     from presupuesto.ingest.bronze import write_bronze
     from presupuesto.quality.registry import run_quality, write_quality_report
     from presupuesto.reporting.artifacts import write_run_artifacts
-    from presupuesto.reporting.exports import write_exec_by_entity_csv, write_gold_summary_csv
+    from presupuesto.reporting.exports import (
+        write_category_csv,
+        write_department_csv,
+        write_exec_by_entity_csv,
+        write_gold_summary_csv,
+    )
     from presupuesto.transforms.silver import build_silver, write_silver
 
     artifacts = _artifacts_dir()
@@ -137,6 +142,8 @@ def _execute_rows(
         write_findings(gold_result["findings"], artifacts)
         write_exec_by_entity_csv(gold_result["exec_by_entity"], artifacts)
         write_gold_summary_csv(gold_result["exec_by_entity"], gold_result["findings"], artifacts)
+        write_category_csv(gold_result["findings"], artifacts)
+        write_department_csv(gold_result["findings"], artifacts)
         gold_summary = {
             "blocked": False,
             "entities": gold_result["entities"],
