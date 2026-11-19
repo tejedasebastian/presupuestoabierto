@@ -253,7 +253,7 @@ docs: add real data findings draft
 - [x] Notebook wrapper de equivalencia Databricks (≤ 20 líneas, sin lógica).
 - [x] README con capturas y métricas reales.
 - [x] README.en.md.
-- [ ] Tag `v0.1.0` y release con artefactos.
+- [x] Tag `v0.1.0` y release con artefactos.
 - [x] Actualizar `Portafolio_Proyectos_Peru.md`.
 
 **Evidencia del checkpoint:**
@@ -264,6 +264,7 @@ docs: add real data findings draft
 - Notebook `notebooks/databricks_equivalence.py` (9 líneas efectivas, sin lógica de negocio).
 - README y README.en.md con demo, métricas reales y enlace a `docs/dashboard.md`.
 - `Portafolio_Proyectos_Peru.md` actualizado con estado v0.1.0, stack y métricas reales.
+- Release `v0.1.0` con 8 artefactos BYOD (6 payloads + manifest + checksums) y `CHANGELOG.md`.
 
 **E2E del checkpoint:**
 
@@ -294,13 +295,13 @@ chore: release v0.1.0
 
 Un checkpoint está terminado cuando:
 
-- [ ] El E2E del checkpoint pasa.
-- [ ] El artefacto correspondiente existe y es reproducible.
-- [ ] El checkbox está marcado.
-- [ ] `README.md` está actualizado si cambió algo visible.
-- [ ] `ruff format` y `ruff check` pasan.
-- [ ] No hay PII, secretos ni datos crudos commiteados.
-- [ ] El commit está hecho.
+- [x] El E2E del checkpoint pasa.
+- [x] El artefacto correspondiente existe y es reproducible.
+- [x] El checkbox está marcado.
+- [x] `README.md` está actualizado si cambió algo visible.
+- [x] `ruff format` y `ruff check` pasan.
+- [x] No hay PII, secretos ni datos crudos commiteados.
+- [x] El commit está hecho.
 
 El proyecto está terminado cuando:
 
