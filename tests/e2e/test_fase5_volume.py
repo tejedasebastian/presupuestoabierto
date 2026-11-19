@@ -52,8 +52,18 @@ def test_artifact_checksums_are_verifiable() -> None:
     report_path = ARTIFACTS / "quality_report.json"
     findings_path = ARTIFACTS / "findings.json"
     by_entity_path = ARTIFACTS / "execution_by_entity.csv"
+    category_path = ARTIFACTS / "category_summary.csv"
+    department_path = ARTIFACTS / "department_summary.csv"
     summary_path = ARTIFACTS / "gold_summary.csv"
-    for path in (checksums_path, report_path, findings_path, by_entity_path, summary_path):
+    for path in (
+        checksums_path,
+        report_path,
+        findings_path,
+        by_entity_path,
+        category_path,
+        department_path,
+        summary_path,
+    ):
         assert path.exists(), path
 
     recorded = {}
@@ -65,6 +75,8 @@ def test_artifact_checksums_are_verifiable() -> None:
         "quality_report.json",
         "findings.json",
         "execution_by_entity.csv",
+        "category_summary.csv",
+        "department_summary.csv",
         "gold_summary.csv",
     }
     for name, expected in recorded.items():

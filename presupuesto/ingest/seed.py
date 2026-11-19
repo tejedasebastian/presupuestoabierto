@@ -435,8 +435,12 @@ def generate_volume_rows(entities: int, categories: int = 6) -> list[dict]:
         amounts = _entity_amounts(entity_index)
         entity_rows: list[dict] = []
         annual_accrued = 0
+        base_share = amounts["pim"] // categories
+        remainder = amounts["pim"] - base_share * categories
         for cat_index, (cat_code, cat_name) in enumerate(CATEGORIES[:categories]):
-            share = (amounts["pim"] // categories) + cat_index * 1_000
+            # Keep the synthetic annual accrued within PIM: validation #9
+            # (devengado <= PIM) must hold for the volume dataset too.
+            share = base_share + (remainder if cat_index == categories - 1 else 0)
             monthly = share // 12
             annual_accrued += monthly * 12
             for month in range(1, 13):
@@ -457,8 +461,8 @@ def generate_volume_rows(entities: int, categories: int = 6) -> list[dict]:
                         "certification": None,
                         "annual_commitment": None,
                         "monthly_commitment": None,
-                        "accrued": monthly,
-                        "paid": int(monthly * 0.98),
+                        "accrued": float(monthly),
+                        "paid": float(monthly * 0.98),
                         "execution_pct": None,
                         "query_date": SEED_QUERY_DATE,
                         "source_file": f"volume_{entity_index}",
