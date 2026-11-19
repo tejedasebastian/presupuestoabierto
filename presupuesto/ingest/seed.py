@@ -244,6 +244,13 @@ def _annual_rows(entities: int, dirty: bool) -> list[str]:
                 [_fmt(100), "-5,000", _fmt(90), _fmt(80), _fmt(70), _fmt(60), _fmt(50), "55.0"],
             )
         )
+        # Structurally dead row: null accrued (silver quarantine case).
+        rows.append(
+            _data_row(
+                "150155-301055: MUNICIPALIDAD SIN DEVENGADO",
+                [_fmt(100), _fmt(110), _fmt(90), _fmt(80), _fmt(70), " ", _fmt(50), "55.0"],
+            )
+        )
     return rows
 
 
@@ -276,20 +283,19 @@ def _monthly_rows(entity_index: int, dirty: bool, drop_months: int = 0) -> list[
             )
         )
     if dirty and entity_index == 0:
-        # V4 month 13 (out of range).
+        # V11 break the monthly-sums-to-annual invariant: replace December
+        # (index 11 for a full 12-month entity) with an inconsistent amount.
+        rows[11] = _data_row(
+            "12: 'Diciembre",
+            [" ", " ", _fmt(2000), _fmt(1600), _fmt(1400), _fmt(999), _fmt(900), " "],
+        )
+        # V4 month 13 (out of range), appended after so V11 cannot destroy it.
         rows.append(
             _data_row(
                 "13: 'Tridecimbre",
                 [" ", " ", _fmt(1000), _fmt(800), _fmt(700), _fmt(500), _fmt(400), " "],
             )
         )
-        # V11 break the monthly-sums-to-annual invariant: last month doubled.
-        last = rows[-1]
-        rows[-1] = _data_row(
-            "12: 'Diciembre",
-            [" ", " ", _fmt(2000), _fmt(1600), _fmt(1400), _fmt(999), _fmt(900), " "],
-        )
-        del last
     return rows
 
 

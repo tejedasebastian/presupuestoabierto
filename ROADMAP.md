@@ -96,18 +96,24 @@ feat: add bronze ingestion and seed generator
 
 ## Fase 2 — Silver y cuarentena
 
-- [ ] Mapping español → inglés (constante única, documentada en `SPECS.md`).
-- [ ] Tipos: `year` int, `month` 1–12, montos decimal(18,2).
-- [ ] Dedupe por `(year, month, entity_code, category_code)`.
-- [ ] Resolución de catálogos: pliegos y categorías (`data/catalogs.py`).
-- [ ] Cuarentena explícita (`silver.budget_execution_quarantine`) con motivo por fila.
-- [ ] Escritura silver en Delta, idempotente.
+- [x] Mapping español → inglés (columnas canónicas grain-aware, documentadas en `SPECS.md` 8.2).
+- [x] Tipos: `year` int, `month` int (NULL en anual), montos decimal(18,2).
+- [x] **Sin dedupe silencioso:** los duplicados los reporta la validación 6; silver no maquilla.
+- [x] Cuarentena explícita (`silver.budget_execution_quarantine`) solo para filas estructuralmente inútiles (`accrued` nulo), con motivo por fila.
+- [x] Escritura silver en Delta, idempotente.
 
 **E2E del checkpoint:**
 
-- Seed clean → silver 0 filas en cuarentena, 0 duplicados, clave única.
-- Seed dirty → las filas malas van a cuarentena con el motivo correcto; las filas buenas siguen en silver.
-- El E2E no re-ejecuta el transform para validar silver (nada tautológico): valida contra los datos.
+- [x] Seed clean → silver == bronze, 0 filas en cuarentena.
+- [x] Seed dirty → la fila estructuralmente muerta va a cuarentena con motivo `null_accrued`; las violaciones de negocio **quedan en silver** para que quality las detecte.
+- [x] Conservación exacta: `bronze == silver + cuarentena` (nada se pierde).
+- [x] El E2E no re-ejecuta el transform para validar silver (nada tautológico): valida contra los datos.
+
+**Evidencia local:**
+
+- `pytest tests/e2e -v` → **12 passed** (Fases 0–2).
+- Los E2E cazaron y fixearon dos bugs reales: el regex del año enganchaba el subtítulo y devolvía el año de la fecha de consulta; el seed dirty destruía la fila del mes 13 al reemplazar `rows[-1]`.
+- `ruff format` y `ruff check` → All checks passed.
 
 **Criterio de aceptación:**
 

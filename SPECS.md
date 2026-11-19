@@ -220,24 +220,35 @@ Fila cruda del CSV + metadatos de procedencia. Columnas fuente en español tal c
 
 ### 8.2 Silver — `silver.budget_execution`
 
-| Columna | Tipo | Origen (español → inglés) |
+Silver cubre **cuatro grains** en una tabla grain-aware (los NULL marcan la dimensión agregada del reporte de origen):
+
+| Grain | entity_code | month | category | ¿Qué representa? |
+|---|---|---|---|---|
+| `entity_annual` | pliego | NULL | NULL | Total anual de una municipalidad |
+| `entity_monthly` | pliego | 1–12 | NULL | Ejecución de un mes de una municipalidad (montos del mes) |
+| `department` | NULL | NULL | NULL | Municipalidades agregadas por departamento |
+| `category_national` | NULL | NULL | genérica | Municipalidades agregadas por genérica |
+
+| Columna | Tipo | Origen |
 |---|---|---|
-| `entity_code` | string | pliego extraído de `"UBIGEE-PLIEGO: NOMBRE"` (p. ej. `301271`) |
+| `grain` | string | clasificador del export |
+| `entity_code` | string | pliego extraído de `"UBIGEE-PLIEGO: NOMBRE"` |
 | `entity_name` | string | nombre de la entidad |
-| `entity_ubigee` | string | ubigeo extraído del código compuesto (p. ej. `150122`) |
-| `government_level` | string | derivado del rango del pliego (GL) |
-| `year` | int | AÑO EJECUCIÓN |
-| `month` | int (1–12) | MES / Periodo |
-| `category` | string | GENÉRICA / Categoría |
-| `category_code` | string | mapeado desde catálogo |
-| `pia_amount` | decimal(18,2) | PIA |
-| `pim_amount` | decimal(18,2) | PIM |
-| `accrued_amount` | decimal(18,2) | DEVENGADO (del mes en vistas mensuales; anual en vistas anuales) |
-| `source_file` | string | procedencia heredada |
+| `entity_ubigee` | string | ubigeo extraído del código compuesto |
+| `year` | int | `Año de Ejecución` del encabezado |
+| `month` | int (1–12, NULL en anual) | vista mensual |
+| `category` / `category_code` | string | `"5-21: PERSONAL..."` |
+| `department` / `department_code` | string | `"01: AMAZONAS"` |
+| `pia`, `pim`, `certification`, `annual_commitment`, `monthly_commitment`, `accrued`, `paid` | decimal(18,2) | columnas del export |
+| `execution_pct` | double | `Avance %` |
+| `concept_raw`, `query_date`, `source_file`, `ingested_at`, `row_hash` | string/timestamp | procedencia |
 
-Clave de negocio: `(year, month, entity_code, category_code)`, única.
+**Clave de negocio (grain-aware):** `(grain, year, coalesce(month,-1), coalesce(entity_code,''), coalesce(category_code,''), coalesce(department_code,''))`, única (la valida la #6).
 
-Filas inválidas van a `silver.budget_execution_quarantine` con el motivo; **no se pierden**, se reportan.
+**División honesta entre cuarentena y calidad:**
+
+- `silver.budget_execution_quarantine` recibe solo filas **estructuralmente inútiles**: `accrued` nulo (la ejecución no se puede medir) o concepto inclasificable sin contexto. Nada se pierde: `bronze = silver + cuarentena`.
+- Las violaciones de negocio (mes 13, duplicados, devengado > PIM, negativos, etc.) **quedan en silver**: el registro de calidad (Fase 3) las detecta y el gate decide. Silver no maquilla: no dedupe silencioso, no drops ocultos.
 
 ### 8.3 Gold
 

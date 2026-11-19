@@ -68,6 +68,7 @@ def run_seed(settings: Settings, mode: str = "clean") -> dict:
     """Generate the seed exports and ingest them through the real BYOD path."""
     from presupuesto.ingest.bronze import write_bronze
     from presupuesto.ingest.seed import generate_seed_files
+    from presupuesto.transforms.silver import build_silver, write_silver
 
     spark = get_spark(app_name="presupuesto-seed", driver_memory=settings.driver_memory)
 
@@ -75,20 +76,34 @@ def run_seed(settings: Settings, mode: str = "clean") -> dict:
     rows, file_failures = _ingest_specs(settings, specs)
     out = write_bronze(spark, rows, settings.medallion_dir)
 
-    df = spark.read.format("delta").load(str(out))
-    grain_counts = {row["grain"]: row["count"] for row in df.groupBy("grain").count().collect()}
-    entities = df.filter(df.grain == "entity_annual").select("entity_code").distinct().count()
+    bronze_df = spark.read.format("delta").load(str(out))
+    silver_df, quarantine_df = build_silver(spark, bronze_df)
+    silver_path, quarantine_path = write_silver(silver_df, quarantine_df, settings.medallion_dir)
+
+    grain_counts = {
+        row["grain"]: row["count"] for row in bronze_df.groupBy("grain").count().collect()
+    }
+    entities = (
+        bronze_df.filter(bronze_df.grain == "entity_annual")
+        .select("entity_code")
+        .distinct()
+        .count()
+    )
 
     return {
         "status": "ok",
         "source": "seed",
         "mode": mode,
         "rows_ingested": len(rows),
+        "silver_rows": silver_df.count(),
+        "quarantined_rows": quarantine_df.count(),
         "grain_counts": grain_counts,
         "entities": entities,
         "files_parsed": len(specs) - len(file_failures),
         "file_failures": file_failures,
         "bronze_path": str(out),
+        "silver_path": str(silver_path),
+        "quarantine_path": str(quarantine_path),
     }
 
 

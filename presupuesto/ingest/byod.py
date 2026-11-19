@@ -34,9 +34,10 @@ _MONTH_RE = re.compile(r"^\s*(\d{1,2}):\s*'?(\w+)\s*$")
 _CATEGORY_RE = re.compile(r"^\s*(\d+-\d+):\s*(.*?)\s*$")
 _DEPARTMENT_RE = re.compile(r"^\s*(\d{2}):\s*(.*?)\s*$")
 _YEAR_RE = re.compile(
-    # Tolerant match: real exports carry mangled accents ("Ejecuci?n") and
-    # fixtures use HTML entities ("Ejecuci&oacute;n").
-    r"Ejecuci.{0,120}?(\d{4})",
+    # Anchor on "Año de Ejecución" (tolerant to mangled bytes and HTML
+    # entities) so the subtitle "Consulta de Ejecución del Gasto" cannot
+    # leak the query-date year into the execution year.
+    r"A.{0,15}?o de Ejecuci.{0,200}?(\d{4})",
     re.IGNORECASE | re.DOTALL,
 )
 _QUERY_DATE_RE = re.compile(r"Fecha de la Consulta:\s*([^<]+)")

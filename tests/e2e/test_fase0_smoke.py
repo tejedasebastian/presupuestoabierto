@@ -44,9 +44,10 @@ def test_cli_smoke_run() -> None:
 
 def test_shared_session_writes_delta(spark_session) -> None:
     """The shared session factory produces exactly one session with Delta."""
+    from presupuesto.config import get_settings
     from presupuesto.shared.spark import get_spark
 
-    again = get_spark(app_name="presupuesto-e2e", driver_memory="768m")
+    again = get_spark(app_name="presupuesto-e2e", driver_memory=get_settings().driver_memory)
     assert again is spark_session
 
     out = SMOKE_PATH / "shared_check"
