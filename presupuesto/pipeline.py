@@ -101,6 +101,33 @@ def run_seed(settings: Settings, mode: str = "clean") -> dict:
     )
     report_path = write_quality_report(quality, _artifacts_dir())
 
+    from presupuesto.analytics.gold import (
+        remove_gold,
+        write_findings,
+        write_gold,
+    )
+    from presupuesto.reporting.exports import write_exec_by_entity_csv, write_gold_summary_csv
+
+    artifacts = _artifacts_dir()
+    if quality["gate"]["blocked"]:
+        remove_gold(settings.medallion_dir)
+        gold_summary = {"blocked": True, "entities": 0, "monthly_rows": 0}
+    else:
+        gold_result = write_gold(
+            spark,
+            silver_df,
+            settings.medallion_dir,
+            low_threshold=settings.low_execution_threshold,
+        )
+        write_findings(gold_result["findings"], artifacts)
+        write_exec_by_entity_csv(gold_result["exec_by_entity"], artifacts)
+        write_gold_summary_csv(gold_result["exec_by_entity"], gold_result["findings"], artifacts)
+        gold_summary = {
+            "blocked": False,
+            "entities": gold_result["entities"],
+            "monthly_rows": gold_result["monthly_rows"],
+        }
+
     grain_counts = {
         row["grain"]: row["count"] for row in bronze_df.groupBy("grain").count().collect()
     }
@@ -121,6 +148,7 @@ def run_seed(settings: Settings, mode: str = "clean") -> dict:
         "quality_summary": quality["summary"],
         "quality_gate": quality["gate"],
         "quality_report": str(report_path),
+        "gold": gold_summary,
         "grain_counts": grain_counts,
         "entities": entities,
         "files_parsed": len(specs) - len(file_failures),

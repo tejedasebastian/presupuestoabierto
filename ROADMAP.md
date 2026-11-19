@@ -175,24 +175,30 @@ feat: add twelve quality validations
 
 ## Fase 4 — Gold y hallazgos
 
-- [ ] `gold.exec_monthly`: % ejecución por `(entity, category, month)`.
-- [ ] `gold.exec_by_entity`: totales y % ejecución anual con `RANK()`/`ROW_NUMBER()`.
-- [ ] `gold.findings`: bottom-N municipalidades, categorías críticas, alertas < umbral.
-- [ ] `findings.json` como artefacto con lenguaje neutral.
-- [ ] Export `execution_by_entity.csv` y `gold_summary.csv` para Power BI.
+- [x] `gold.exec_monthly`: ejecución mensual por `(entity, month)`.
+- [x] `gold.exec_by_entity`: totales y % ejecución anual con `ROW_NUMBER()` (empates resueltos por `entity_code`).
+- [x] `gold.findings`: bottom-N municipalidades, categorías críticas, alertas < umbral y departamentos.
+- [x] `findings.json` como artefacto con lenguaje neutral.
+- [x] Export `execution_by_entity.csv` y `gold_summary.csv` para Power BI.
 
 **E2E del checkpoint:**
 
-- Seed clean → gold con % de ejecución calculado correctamente (el E2E recalcula esperados conocidos del seed y compara).
-- Rankings ordenados y con empates resueltos de forma documentada.
-- Hallazgos presentes con N municipalidades y categorías.
-- Dirty → gold no existe (el gate lo impide).
+- [x] Seed clean → gold con % de ejecución correcto (el E2E **recalcula** el esperado desde la fórmula del seed, no confía en el pipeline).
+- [x] Rankings densos 1..50, orden descendente por % de ejecución.
+- [x] Hallazgos: bottom-10, 8 alertas < 60% (exactas por construcción del seed), categorías y departamentos.
+- [x] Dirty → gold **no existe** y el gold stale del run clean se elimina (no representa al dataset actual).
+
+**Evidencia local:**
+
+- `pytest tests/e2e/test_fase4_gold.py -v` → **3 passed**.
+- Export CSV: 51 líneas (header + 50 entidades) con header estable verificado.
+- `ruff format` y `ruff check` → All checks passed.
 
 **Criterio de aceptación:**
 
-- Gold nunca se deriva de bronze.
-- Los porcentajes usan `pim_amount` como denominador y manejan PIM = 0.
-- El E2E valida matemática de negocio, no solo “hay filas”.
+- [x] Gold nunca se deriva de bronze (solo de silver validado).
+- [x] Los porcentajes se recomputan desde montos (`accrued/pim`), nunca se confía en el `Avance %` del export; PIM = 0 → 0.0.
+- [x] El E2E valida matemática de negocio, no solo “hay filas”.
 
 **Commit sugerido:**
 
