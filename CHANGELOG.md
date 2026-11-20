@@ -15,7 +15,7 @@ Todas las fechas son locales (America/Lima).
 
 ### Notas
 
-- El `.pbix` nacional se guarda en Power BI Desktop a partir del PBIP; el PBIP es la fuente reproducible.
+- El `.pbix` nacional está en `dashboard/PresupuestoAbiertoPE.pbix`; el PBIP sigue siendo la fuente reproducible.
 - No se publica en Power BI Service en v1.0.
 
 ## [0.1.0] — 2026-11-18

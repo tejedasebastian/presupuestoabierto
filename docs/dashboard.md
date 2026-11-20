@@ -2,7 +2,7 @@
 
 > **Estado:** PBIP validado y revisado visualmente en Power BI Desktop (19/11/2026).
 > **Cobertura:** 1,892 municipalidades de 25 departamentos.
-> **Entrega:** el usuario abre el PBIP, actualiza el modelo y guarda el `.pbix` final.
+> **Entrega:** el `.pbix` nacional está en `dashboard/PresupuestoAbiertoPE.pbix`; el PBIP es la fuente reproducible.
 > **No se publica en Power BI Service en v1.0.**
 
 ## Qué contiene
@@ -42,12 +42,12 @@ La columna `Municipalidad` es única: cuando hay homónimos entre departamentos 
 - Las tablas de contexto están **desconectadas** de `ExecutionByEntity` a propósito: son agregados nacionales y filtrarlos por municipalidad sería engañoso.
 - El parámetro `DataFolder` apunta a `artifacts/e2e/` en esta máquina. Si mueves el proyecto, actualízalo en `PresupuestoAbiertoPE.SemanticModel/definition/expressions.tmdl`.
 
-## Cómo abrirlo y guardar el `.pbix`
+## Cómo abrirlo y regenerar el `.pbix`
 
 1. Abre `dashboard/PresupuestoAbiertoPE.pbip` en Power BI Desktop.
 2. En la primera apertura, Desktop puede mostrar “una o varias columnas calculadas deben actualizarse manualmente” y tablas vacías: los datos importados aún no se procesaron. Ejecuta **Inicio → Actualizar** (o `RefreshWithXMLA` con `refreshType: Full` desde el MCP de modelado) y espera a que termine.
 3. Verifica que el panorama muestre **1,892**, **79.5%**, **196** y **21.2 pp**. Si aparecen `--` o 171, el refresh no terminó o estás sobre el snapshot anterior.
-4. Guarda una copia como `.pbix` con **Archivo → Guardar como**. El PBIP queda como fuente reproducible; el `.pbix` es la entrega manual.
+4. El `.pbix` nacional ya está en `dashboard/PresupuestoAbiertoPE.pbix` (240,165 bytes). Si regeneras el modelo/reporte, guarda una copia como `.pbix` con **Archivo → Guardar como**. El PBIP queda como fuente reproducible; el `.pbix` es la entrega.
 
 > La validación visual de este repositorio se hizo con el modelo refrescado y el panel de filtros colapsado. Las capturas están en `docs/screenshots/`.
 

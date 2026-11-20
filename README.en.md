@@ -197,7 +197,7 @@ artifacts/e2e/
 - No scraping: data arrives BYOD from your browser.
 - The Ministry's export format may vary; the adapter fails explicitly when columns are missing.
 - Findings describe execution, not causes.
-- The final `.pbix` is saved in Power BI Desktop; the PBIP is the reproducible source.
+- The final `.pbix` is at `dashboard/PresupuestoAbiertoPE.pbix`; the PBIP is the reproducible source.
 - The dashboard is not published to Power BI Service in v1.0.
 
 ---

@@ -197,7 +197,7 @@ artifacts/e2e/
 - No scrapea el MEF: los datos llegan BYOD desde tu navegador.
 - El formato del CSV de la Consulta Amigable puede variar; el adaptador falla explícito si faltan columnas.
 - Los hallazgos describen ejecución, no explican causas.
-- El `.pbix` final se guarda en Power BI Desktop; el PBIP es la fuente reproducible.
+- El `.pbix` final está en `dashboard/PresupuestoAbiertoPE.pbix`; el PBIP es la fuente reproducible.
 - El dashboard no se publica en Power BI Service en v1.0.
 
 ---

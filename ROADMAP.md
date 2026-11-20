@@ -298,7 +298,7 @@ chore: release v0.1.0
 - [x] Añadir `department` a gold, CSV y modelo TMDL; `Municipalidad` única para homónimos.
 - [x] Dashboard nacional: bottom-10 nacional, 6 genéricas, bottom-7 de 25 departamentos, ranking de 1,892 con filtro por departamento + búsqueda.
 - [x] Capturas nacionales en `docs/screenshots/`.
-- [ ] PBIX nacional en Git (guardado manual desde Power BI Desktop).
+- [x] PBIX nacional en Git (240,165 bytes, 1,892 filas, generado desde el PBIP).
 - [x] Diccionario de datos y diagrama de arquitectura.
 - [ ] Test con una persona externa (kit en `docs/user-test-v1.0.0.md`; pendiente de ejecutar).
 - [x] Tag y release `v1.0.0`.
@@ -312,6 +312,7 @@ chore: release v0.1.0
 - PBIR `validate` → **0 errores, 0 warnings**; modelo TMDL 4 tablas / 11 medidas; Desktop refrescado con 1,892 filas.
 - Capturas en `docs/screenshots/panorama.png` y `ranking.png`.
 - Manifiesto con SHA-256 de los 28 archivos fuente y checksums de los 6 payloads.
+- PBIX nacional `dashboard/PresupuestoAbiertoPE.pbix` (240,165 bytes).
 - Release `v1.0.0` con 8 artefactos: https://github.com/kuki236/presupuestoabierto/releases/tag/v1.0.0
 - CI verde en el commit de release: pipeline 17m22s + volume 41s.
 
@@ -321,7 +322,7 @@ chore: release v0.1.0
 - [x] Dashboard nacional validado y capturado.
 - [x] Documentación de datos, arquitectura y hallazgos.
 - [x] Release `v1.0.0` con 8 artefactos y CI verde.
-- [ ] PBIX nacional en Git (guardado manual desde Power BI Desktop).
+- [x] PBIX nacional en Git (`dashboard/PresupuestoAbiertoPE.pbix`, 240,165 bytes).
 - [ ] Feedback de una persona externa.
 
 ---
