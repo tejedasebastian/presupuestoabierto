@@ -6,7 +6,7 @@ PresupuestoAbiertoPE convierte la ejecución presupuestal de las municipalidades
 
 > **Estado:** v1.0.0 — cobertura nacional 2025 (1,892 municipalidades), 12 validaciones y dashboard PBIP.
 >
-> **Release:** [v1.0.0](https://github.com/kuki236/presupuestoabierto/releases/tag/v1.0.0)
+> **Release:** [v1.0.0](https://github.com/tejedasebastian/presupuestoabierto/releases/tag/v1.0.0)
 >
 > **English:** [README.en.md](README.en.md)
 
@@ -115,7 +115,7 @@ Exportes BYOD oficiales (navegador humano) → data/raw/*.xls
 | 8 | `silver_entity_named` | warn | Entidad no placeholder |
 | 9 | `business_devengado_le_pim` | fail | Devengado ≤ PIM |
 | 10 | `business_amounts_positive` | fail | Montos ≥ 0 |
-| 11 | `business_cumulative_monotonic` | warn | Acumulado no decreciente (`LAG`) |
+| 11 | `business_monthly_sums_to_annual` | warn | Suma de devengado mensual ≈ total anual (tolerancia 1%) |
 | 12 | `business_coverage_months` | warn | Cobertura de meses |
 
 Un `fail` detiene gold; un `warn` se reporta. Todo queda en `quality_report.json` con conteos y muestras.

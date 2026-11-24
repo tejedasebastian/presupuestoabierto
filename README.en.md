@@ -6,7 +6,7 @@ PresupuestoAbiertoPE turns municipal budget execution (official exports from Per
 
 > **Status:** v1.0.0 — national 2025 coverage (1,892 municipalities), 12 validations and PBIP dashboard.
 >
-> **Release:** [v1.0.0](https://github.com/kuki236/presupuestoabierto/releases/tag/v1.0.0)
+> **Release:** [v1.0.0](https://github.com/tejedasebastian/presupuestoabierto/releases/tag/v1.0.0)
 >
 > **Español:** [README.md](README.md)
 
@@ -115,7 +115,7 @@ Official BYOD exports (human browser) → data/raw/*.xls
 | 8 | `silver_entity_named` | warn | Entity not a placeholder |
 | 9 | `business_devengado_le_pim` | fail | Accrued ≤ PIM |
 | 10 | `business_amounts_positive` | fail | Amounts ≥ 0 |
-| 11 | `business_cumulative_monotonic` | warn | Cumulative non-decreasing (`LAG`) |
+| 11 | `business_monthly_sums_to_annual` | warn | Monthly accrual sum ≈ annual total (1% tolerance) |
 | 12 | `business_coverage_months` | warn | Month coverage |
 
 A `fail` blocks gold; a `warn` is reported. Everything lands in `quality_report.json` with counts and samples.

@@ -313,7 +313,7 @@ chore: release v0.1.0
 - Capturas en `docs/screenshots/panorama.png` y `ranking.png`.
 - Manifiesto con SHA-256 de los 28 archivos fuente y checksums de los 6 payloads.
 - PBIX nacional `dashboard/PresupuestoAbiertoPE.pbix` (240,165 bytes).
-- Release `v1.0.0` con 8 artefactos: https://github.com/kuki236/presupuestoabierto/releases/tag/v1.0.0
+- Release `v1.0.0` con 8 artefactos: https://github.com/tejedasebastian/presupuestoabierto/releases/tag/v1.0.0
 - CI verde en el commit de release: pipeline 17m22s + volume 41s.
 
 **Criterio de aceptación:**

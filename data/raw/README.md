@@ -3,13 +3,14 @@
 > Los archivos `.xls` de esta carpeta son exportaciones oficiales de la **Consulta Amigable de Ejecución del Gasto** del MEF (SIAF), año 2025.
 > Esta carpeta está **gitignored**: los archivos no se commitean; este README y `byod_manifest.json` sí (son la evidencia de procedencia).
 
-## Cómo se capturaron (18–19/11/2026)
+## Cómo se obtuvieron (18–19/11/2026)
 
-1. Navegación drill-down en la app oficial con el navegador del usuario:
+1. Navegación manual drill-down en la app oficial con el navegador del usuario:
    `https://apps5.mineco.gob.pe/transparencia/Navegador/Navegar_7.aspx`
    Ruta: Nivel de Gobierno → `M: GOBIERNOS LOCALES` → `M: MUNICIPALIDADES` → Departamento.
-2. El botón "Exportar" genera una URL GET sin estado con el estado de la consulta codificado en parámetros.
-3. Descarga directa de esa URL (una petición por archivo; sin crawling; `apps5.mineco.gob.pe` no tiene WAF). Se descargaron 24 archivos departamentales nuevos el 19/11/2026; Lima se reutilizó del lote del 18/11/2026.
+2. En cada vista se usó la función "Exportar" que ofrece la propia aplicación para descargar el reporte departamental en formato `.xls`.
+3. Las descargas las hizo el usuario desde su navegador, respetando los términos de uso y los controles de acceso del portal. El proyecto no automatiza el scraping, no evita mecanismos de protección y no llama al MEF desde tests ni CI.
+4. Se obtuvieron 24 archivos departamentales nuevos el 19/11/2026; Lima se reutilizó del lote del 18/11/2026.
 
 ## Cobertura
 
